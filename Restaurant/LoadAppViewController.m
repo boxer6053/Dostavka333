@@ -19,6 +19,7 @@
 @property BOOL isFirstTime;
 @property BOOL isParamTagDone;
 @property (nonatomic, strong) GettingCoreContent *content;
+@property (strong, nonatomic) NSMutableDictionary *cityWithIdDictionary;
 
 //Titles
 //@property (nonatomic, weak) NSString *titleLoading;
@@ -37,6 +38,7 @@
 @synthesize responseData = _responseData;
 @synthesize isParamTagDone = _isParamTagDone;
 @synthesize content = _content;
+@synthesize cityWithIdDictionary = _cityWithIdDictionary;
 
 //titles
 //@synthesize titleLoading = _titleLoading;
@@ -373,6 +375,13 @@
     {
         NSNumber *idCity = [[NSNumber alloc] initWithInteger:buttonIndex+1];
         [[NSUserDefaults standardUserDefaults] setObject:idCity forKey:@"defaultCityId"];
+        
+        self.cityWithIdDictionary = [[NSMutableDictionary alloc] init];
+        
+        [self.cityWithIdDictionary setValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"] stringValue] forKey:@"idCity"];
+        [self.cityWithIdDictionary setValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"] stringValue] forKey:@"idLanguage"];
+        
+        [self.content addObjectToCoreDataEntity:@"CheckChangesSettings" withDictionaryOfAttributes:self.cityWithIdDictionary.copy];
         
         //зберігаємо стан загрузки міста
         [[NSUserDefaults standardUserDefaults] setObject:idCity forKey:[NSString stringWithFormat:@"isCityHere%@", idCity]];

@@ -699,12 +699,7 @@
         
         
     }
-    //NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/addon_domains_folder/test4/root/%@",[[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
-    //urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    
-    //NSURL *url = [[NSURL alloc] initWithString:urlForImage];
-    
+   
     
     return dontTouchThisOne.copy;
 }

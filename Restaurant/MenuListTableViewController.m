@@ -31,6 +31,7 @@
 @synthesize navigationBar = _navigationBar;
 @synthesize kindOfMenu = _kindOfMenu;
 @synthesize selectedRow = _selectedRow;
+@synthesize currentPictures = _currentPictures;
 @synthesize arrayData = _arrayData;
 @synthesize db = _db;
 @synthesize imageDownloadsInProgress = _imageDownloadsInProgress;
@@ -45,6 +46,16 @@
     [UIView setAnimationDuration:1];
     [View setAlpha:1];
     [UIView commitAnimations];
+}
+
+-(NSDictionary *)currentPictures
+{
+    if(!_currentPictures)
+    {
+        _currentPictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
+        return _currentPictures;
+    }
+    return _currentPictures;
 }
 - (NSMutableArray *)arrayData
 {
@@ -181,6 +192,7 @@
     hitView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HIT1.png"]];
     newsItemView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"New1.png"]];
     self.didLoad = YES;
+    NSLog(@"current pictures are %@", self.currentPictures);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -188,13 +200,13 @@
     [super viewDidAppear:YES];
     
     //fetching pictures
-    NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
+ //   NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
     ProductDataStruct *dataStruct;
     for (int i = 0; i < self.arrayData.count; i++)
     {
         dataStruct = [self.arrayData objectAtIndex:i];
-        NSData *dataOfPicture = [[pictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[pictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlForImage];
         //        dataStruct.link = url.description;
@@ -256,7 +268,7 @@
 {
     [self setTableView:nil];
     [self setNavigationBar:nil];
-
+    [self setCurrentPictures:nil];
     [self setKindOfMenu:nil];
     [self setDb:nil];
     [self setHitView:nil];

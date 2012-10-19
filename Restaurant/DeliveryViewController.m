@@ -28,6 +28,7 @@
 @property (strong, nonatomic) NSString *titlePleaseTryAgain;
 @property (strong, nonatomic) NSString *titleEnterJustNombers;
 @property (strong, nonatomic) NSString *titleWrongTime;
+@property (strong, nonatomic) NSString *titleDontRichMinimumPrice;
 
 @end
 
@@ -66,6 +67,7 @@
 @synthesize titlePleaseTryAgain = _titlePleaseTryAgain;
 @synthesize titleWrongTime = _titleWrongTime;
 @synthesize titleEnterJustNombers = _titleEnterJustNombers;
+@synthesize titleDontRichMinimumPrice = _titleDontRichMinimumPrice;
 
 - (GettingCoreContent *)content
 {
@@ -685,17 +687,27 @@
             return;
         }
         else
-        {
-            [self.hudView failAndDismissWithTitle:nil];
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:self.titleError
+            if ([self.db.cause isEqualToString:@"3"]) {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:self.titleError
+                                                                  message:self.titleDontRichMinimumPrice
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                [message show];
+                return;
+            }
+            else
+            {
+                [self.hudView failAndDismissWithTitle:nil];
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:self.titleError
                                                               message:self.titlePleaseTryAgain
-                                                             delegate:self
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles:nil];
-            [message show];
-            [self.navigationController popViewControllerAnimated:YES];
-            return;
-        }
+                                                                    delegate:self
+                                                        cancelButtonTitle:@"OK"
+                                                        otherButtonTitles:nil];
+                [message show];
+                [self.navigationController popViewControllerAnimated:YES];
+                return;
+            }
     }
     
     NSLog(@"Success: %@", self.db.success);
@@ -893,6 +905,10 @@
         else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Right now restaurant doesn't work, please order delivery by time"])
         {
             self.titleWrongTime = [[array objectAtIndex:i] valueForKey:@"title"];
+        }
+        else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Your order is less than the minimum order value"])
+        {
+            self.titleDontRichMinimumPrice = [[array objectAtIndex:i] valueForKey:@"title"];
         }
     }
 }

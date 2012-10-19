@@ -469,9 +469,11 @@
         
         _imageView = [[UIImageView alloc] initWithFrame: _imageButton.frame];
         _imageView.animationImages = _imageArray;
+        _imageView.clipsToBounds = YES;
+        _imageView.contentMode = UIViewContentModeCenter;
         _imageView.animationDuration = _promotionsArray.count * 6.0;
         _imageView.animationRepeatCount = 0;
-        
+    
         currentImage = 0;
         [_imageView startAnimating];
         
@@ -489,15 +491,9 @@
                                        userInfo:nil
                                         repeats:YES];
     
-        [NSTimer scheduledTimerWithTimeInterval:6.0
-                                         target:self
-                                       selector:@selector(appearOfPromotion)
-                                       userInfo:nil
-                                        repeats:YES];
-    
         [NSTimer scheduledTimerWithTimeInterval:5.0
                                          target:self
-                                       selector:@selector(disappearOfPromotion)
+                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
                                        userInfo:nil
                                         repeats:NO];
     
@@ -507,15 +503,8 @@
         fromSettings = NO;
     }
 }
--(void) appearOfPromotion
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [_viewForPromotion setAlpha:1];
-    [UIView commitAnimations];
-}
 
--(void) disappearOfPromotion
+-(void) disappearOfPromotionAtTheFirstTime
 {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:1];
@@ -529,8 +518,21 @@
                                     repeats:YES];
 }
 
+-(void) disappearOfPromotion
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [_viewForPromotion setAlpha:0];
+    [UIView commitAnimations];
+}
+
 - (void)changingAnimation
 {
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:1];
+    [_viewForPromotion setAlpha:1];
+    [UIView commitAnimations];
+    
     if (currentImage < self.promotionsArray.count - 1)
     {
         currentImage++;
@@ -649,12 +651,15 @@
     }
 //    int i = currentImage - 1;
     [subView.imageView setImage:[[self.promotionsArray objectAtIndex:currentImage] image]];
+    subView.imageView.frame = CGRectMake(10.0,10.0, 300.0, 150.0);
+    subView.label.frame = CGRectMake(0, 160.0, 320, subView.label.frame.size.height);
     subView.label.text = [[self.promotionsArray objectAtIndex:currentImage] title];
     subView.label.textColor = [UIColor redColor];
+    subView.textView.frame = CGRectMake(0, 200.0, subView.textView.frame.size.width, subView.textView.frame.size.height);
     subView.textView.text = [[self.promotionsArray objectAtIndex:currentImage] descriptionText];
     [self.view addSubview:subView];
 }
-
+//
 - (NSString *)createUUID
 {
     // Create universally unique identifier (object)

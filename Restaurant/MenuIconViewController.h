@@ -29,6 +29,7 @@
 @interface MenuIconViewController : UIViewController <UIScrollViewDelegate, GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate, IconDownloaderDelegate>
 
 @property (strong, nonatomic) NSMutableArray *arrayData;
+@property (strong, nonatomic) NSDictionary *currentPictures;
 @property (nonatomic, strong) MenuDataStruct *kindOfMenu;
 @property (strong, nonatomic) GettingCoreContent *db;
 @property (strong, nonatomic) GMGridView *gmGridView;

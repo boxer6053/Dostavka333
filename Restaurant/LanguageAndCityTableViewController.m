@@ -149,7 +149,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (checkConnection.hasConnectivity)
+    if (/*checkConnection.hasConnectivity*/ TRUE)
     {
         self.hudView = [[SSHUDView alloc] initWithTitle:self.titleLoading];
         [self.hudView show];
@@ -263,7 +263,203 @@
                     
                     [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
                     
-                    // http request updatePHP with &tag=rmp
+                    if (checkConnection.hasConnectivity) {
+                        // http request updatePHP with &tag=rmp
+                        NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update"];
+                        [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
+                        [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
+                        
+                        NSArray *productArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Products" withSortDescriptor:@"underbarid"]];
+                        NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants" withSortDescriptor:@"underbarid"]];
+                        NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
+                        
+                        int prod_v = 0;
+                        int mprod_id = [[[productArray objectAtIndex:[productArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        int rest_v = 0;
+                        int mrest_id = [[[restaurantArray objectAtIndex:[restaurantArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        int menu_v = 0;
+                        int mmenu_id = [[[menuArray objectAtIndex:[menuArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        for (int i = 0; i < productArray.count; i++) {
+                            if ([[[productArray objectAtIndex:i] valueForKey:@"version"] intValue] > prod_v) {
+                                prod_v = [[[productArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        for (int i = 0; i < restaurantArray.count; i++) {
+                            if ([[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue] > rest_v) {
+                                rest_v = [[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        for (int i = 0; i < menuArray.count; i++) {
+                            if ([[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue] > menu_v) {
+                                menu_v = [[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        
+                        [urlString appendFormat:@"&prod_v=%u", prod_v];
+                        [urlString appendFormat:@"&mprod_id=%u", mprod_id];
+                        [urlString appendFormat:@"&rest_v=%u", rest_v];
+                        [urlString appendFormat:@"&mrest_id=%u", mrest_id];
+                        [urlString appendFormat:@"&menu_v=%u", menu_v];
+                        [urlString appendFormat:@"&mmenu_id=%u", mmenu_id];
+                        
+                        NSURL *url = [NSURL URLWithString:urlString.copy];
+                        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                        [request setHTTPMethod:@"GET"];
+                        NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                        if (!theConnection)
+                        {
+                            // Inform the user that the connection failed.
+                            UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
+                                                                                         message:@"Not success"
+                                                                                        delegate:self
+                                                                               cancelButtonTitle:@"Ok"
+                                                                               otherButtonTitles:nil];
+                            [connectFailMessage show];
+                            //            }
+                        }
+
+                    } else {
+                        [self performSelector:@selector(complete:) withObject:nil];
+                    }
+                    
+                }
+                else
+                {
+                    if (checkConnection.hasConnectivity) {
+                        if (self.selectedIndex != NSNotFound)
+                        {
+                            UITableViewCell *cell = [tableView
+                                                     cellForRowAtIndexPath:[NSIndexPath
+                                                                            indexPathForRow:self.selectedIndex inSection:0]];
+                            cell.accessoryType = UITableViewCellAccessoryNone;
+                        }
+                        self.selectedIndex = indexPath.row;
+                        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                        [[NSUserDefaults standardUserDefaults] setObject:data forKey:changeStringForUserDefaults];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        
+                        [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
+                        
+                        // http request updatePHP with &tag=rmp
+                        NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update_t"];
+                        [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
+                        [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
+                        
+                        NSArray *productArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Products" withSortDescriptor:@"underbarid"]];
+                        NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants" withSortDescriptor:@"underbarid"]];
+                        NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
+                        
+                        int prod_v = 0;
+                        int mprod_id = [[[productArray objectAtIndex:[productArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        int rest_v = 0;
+                        int mrest_id = [[[restaurantArray objectAtIndex:[restaurantArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        int menu_v = 0;
+                        int mmenu_id = [[[menuArray objectAtIndex:[menuArray count]-1] valueForKey:@"underbarid"] intValue];
+                        
+                        for (int i = 0; i < productArray.count; i++) {
+                            if ([[[productArray objectAtIndex:i] valueForKey:@"version"] intValue] > prod_v) {
+                                prod_v = [[[productArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        for (int i = 0; i < restaurantArray.count; i++) {
+                            if ([[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue] > rest_v) {
+                                rest_v = [[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        for (int i = 0; i < menuArray.count; i++) {
+                            if ([[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue] > menu_v) {
+                                menu_v = [[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue];
+                            }
+                        }
+                        
+                        [urlString appendFormat:@"&prod_v=%u", prod_v];
+                        [urlString appendFormat:@"&mprod_id=%u", mprod_id];
+                        [urlString appendFormat:@"&rest_v=%u", rest_v];
+                        [urlString appendFormat:@"&mrest_id=%u", mrest_id];
+                        [urlString appendFormat:@"&menu_v=%u", menu_v];
+                        [urlString appendFormat:@"&mmenu_id=%u", mmenu_id];
+                        
+                        NSURL *url = [NSURL URLWithString:urlString.copy];
+                        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+                        [request setHTTPMethod:@"GET"];
+                        NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+                        if (!theConnection)
+                        {
+                            // Inform the user that the connection failed.
+                            UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
+                                                                                         message:@"Not success"
+                                                                                        delegate:self
+                                                                               cancelButtonTitle:@"Ok"
+                                                                               otherButtonTitles:nil];
+                            [connectFailMessage show];
+                            //            }
+                        }
+                        
+                        self.cityWithIdDictionary = [[NSMutableDictionary alloc] init];
+                        
+                        [self.cityWithIdDictionary setValue: [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]] forKey:@"idCity"];
+                        [self.cityWithIdDictionary setValue:[NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]] forKey:@"idLanguage"];
+                        
+                        [self.content addObjectToCoreDataEntity:@"CheckChangesSettings" withDictionaryOfAttributes:self.cityWithIdDictionary.copy];
+                    } else {
+                        [self.hudView failAndDismissWithTitle:self.titleUnableFetchData];
+                        [self performSelector:@selector(pop:) withObject:nil afterDelay:1];
+                    }
+                }
+            }
+            
+            
+            //видалаляємо вміст корзини i favorites, якщо змінюємо city
+            //GettingCoreContent *content = [[GettingCoreContent alloc] init];
+            [content deleteAllObjectsFromEntity:@"Cart"];
+            //            [content deleteAllObjectsFromEntity:@"Favorites"];
+            //            [content deleteAllObjectsFromEntity:@"Favorites"];
+        }
+        else
+        {
+            changeStringForUserDefaults = @"defaultLanguageId";
+            data = [[self.destinationArray objectAtIndex:indexPath.row] valueForKey:@"underbarid"];
+            wasDownloaded = [NSString stringWithFormat:@"isLanguageHere%@", data];
+            
+            //-----------------------Change lang---------------------------------------
+            
+            int checkCount = [[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] count];
+            
+            BOOL isLanguage = NO;
+            
+            for (int i = 0; i < checkCount; i++) {
+                NSString *idCityString = [[[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] objectAtIndex:i] valueForKey:@"idCity"];
+                if ([idCityString isEqualToString:[NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]]]) {
+                    NSString *idLanguageString = [[[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] objectAtIndex:i] valueForKey:@"idLanguage"];
+                    if ([[NSString stringWithFormat:@"%@", data] isEqualToString:idLanguageString]) {
+                        isLanguage = YES;
+                        break;
+                    }
+                }
+            }
+            
+            if (isLanguage) {
+                if (self.selectedIndex != NSNotFound)
+                {
+                    UITableViewCell *cell = [tableView
+                                             cellForRowAtIndexPath:[NSIndexPath
+                                                                    indexPathForRow:self.selectedIndex inSection:0]];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                }
+                self.selectedIndex = indexPath.row;
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                [[NSUserDefaults standardUserDefaults] setObject:data forKey:changeStringForUserDefaults];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
+                
+                if (checkConnection.hasConnectivity) {
+                    // http request updatePHP with &tag=update
                     NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update"];
                     [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                     [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
@@ -319,10 +515,16 @@
                         [connectFailMessage show];
                         //            }
                     }
-                    
+
+                } else {
+                    [self performSelector:@selector(complete:) withObject:nil];
                 }
-                else
-                {
+                
+                
+            }
+            else
+            {
+                if (checkConnection.hasConnectivity) {
                     if (self.selectedIndex != NSNotFound)
                     {
                         UITableViewCell *cell = [tableView
@@ -338,7 +540,7 @@
                     [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
                     
                     // http request updatePHP with &tag=rmp
-                    NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=rmp"];
+                    NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update_t"];
                     [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                     [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                     
@@ -378,7 +580,6 @@
                     [urlString appendFormat:@"&menu_v=%u", menu_v];
                     [urlString appendFormat:@"&mmenu_id=%u", mmenu_id];
                     
-                    
                     NSURL *url = [NSURL URLWithString:urlString.copy];
                     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
                     [request setHTTPMethod:@"GET"];
@@ -397,197 +598,14 @@
                     
                     self.cityWithIdDictionary = [[NSMutableDictionary alloc] init];
                     
-                    [self.cityWithIdDictionary setValue: [NSString stringWithFormat:@"%@", data] forKey:@"idCity"];
+                    [self.cityWithIdDictionary setValue: [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]] forKey:@"idCity"];
                     [self.cityWithIdDictionary setValue:[NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]] forKey:@"idLanguage"];
                     
                     [self.content addObjectToCoreDataEntity:@"CheckChangesSettings" withDictionaryOfAttributes:self.cityWithIdDictionary.copy];
-                    
+                } else {
+                    [self.hudView failAndDismissWithTitle:self.titleUnableFetchData];
+                    [self performSelector:@selector(pop:) withObject:nil afterDelay:1];
                 }
-                
-            }
-            
-            
-            //видалаляємо вміст корзини i favorites, якщо змінюємо city
-            //GettingCoreContent *content = [[GettingCoreContent alloc] init];
-            [content deleteAllObjectsFromEntity:@"Cart"];
-            //            [content deleteAllObjectsFromEntity:@"Favorites"];
-            //            [content deleteAllObjectsFromEntity:@"Favorites"];
-        }
-        else
-        {
-            changeStringForUserDefaults = @"defaultLanguageId";
-            data = [[self.destinationArray objectAtIndex:indexPath.row] valueForKey:@"underbarid"];
-            wasDownloaded = [NSString stringWithFormat:@"isLanguageHere%@", data];
-            
-            //-----------------------Change lang---------------------------------------
-            
-            int checkCount = [[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] count];
-            
-            BOOL isLanguage = NO;
-            
-            for (int i = 0; i < checkCount; i++) {
-                NSString *idCityString = [[[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] objectAtIndex:i] valueForKey:@"idCity"];
-                if ([idCityString isEqualToString:[NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]]]) {
-                    NSString *idLanguageString = [[[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] objectAtIndex:i] valueForKey:@"idLanguage"];
-                    if ([[NSString stringWithFormat:@"%@", data] isEqualToString:idLanguageString]) {
-                        isLanguage = YES;
-                        break;
-                    }
-                }
-            }
-            
-            if (isLanguage) {
-                if (self.selectedIndex != NSNotFound)
-                {
-                    UITableViewCell *cell = [tableView
-                                             cellForRowAtIndexPath:[NSIndexPath
-                                                                    indexPathForRow:self.selectedIndex inSection:0]];
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                }
-                self.selectedIndex = indexPath.row;
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                [[NSUserDefaults standardUserDefaults] setObject:data forKey:changeStringForUserDefaults];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
-                
-                // http request updatePHP with &tag=rmp
-                NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update"];
-                [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
-                [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
-                
-                NSArray *productArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Products" withSortDescriptor:@"underbarid"]];
-                NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants" withSortDescriptor:@"underbarid"]];
-                NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
-                
-                int prod_v = 0;
-                int mprod_id = [[[productArray objectAtIndex:[productArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                int rest_v = 0;
-                int mrest_id = [[[restaurantArray objectAtIndex:[restaurantArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                int menu_v = 0;
-                int mmenu_id = [[[menuArray objectAtIndex:[menuArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                for (int i = 0; i < productArray.count; i++) {
-                    if ([[[productArray objectAtIndex:i] valueForKey:@"version"] intValue] > prod_v) {
-                        prod_v = [[[productArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                for (int i = 0; i < restaurantArray.count; i++) {
-                    if ([[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue] > rest_v) {
-                        rest_v = [[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                for (int i = 0; i < menuArray.count; i++) {
-                    if ([[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue] > menu_v) {
-                        menu_v = [[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                
-                [urlString appendFormat:@"&prod_v=%u", prod_v];
-                [urlString appendFormat:@"&mprod_id=%u", mprod_id];
-                [urlString appendFormat:@"&rest_v=%u", rest_v];
-                [urlString appendFormat:@"&mrest_id=%u", mrest_id];
-                [urlString appendFormat:@"&menu_v=%u", menu_v];
-                [urlString appendFormat:@"&mmenu_id=%u", mmenu_id];
-                
-                NSURL *url = [NSURL URLWithString:urlString.copy];
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                [request setHTTPMethod:@"GET"];
-                NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-                if (!theConnection)
-                {
-                    // Inform the user that the connection failed.
-                    UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
-                                                                                 message:@"Not success"
-                                                                                delegate:self
-                                                                       cancelButtonTitle:@"Ok"
-                                                                       otherButtonTitles:nil];
-                    [connectFailMessage show];
-                    //            }
-                }
-                
-            }
-            else
-            {
-                if (self.selectedIndex != NSNotFound)
-                {
-                    UITableViewCell *cell = [tableView
-                                             cellForRowAtIndexPath:[NSIndexPath
-                                                                    indexPathForRow:self.selectedIndex inSection:0]];
-                    cell.accessoryType = UITableViewCellAccessoryNone;
-                }
-                self.selectedIndex = indexPath.row;
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                [[NSUserDefaults standardUserDefaults] setObject:data forKey:changeStringForUserDefaults];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
-                
-                // http request updatePHP with &tag=rmp
-                NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update_t"];
-                [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
-                [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
-                
-                NSArray *productArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Products" withSortDescriptor:@"underbarid"]];
-                NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants" withSortDescriptor:@"underbarid"]];
-                NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
-                
-                int prod_v = 0;
-                int mprod_id = [[[productArray objectAtIndex:[productArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                int rest_v = 0;
-                int mrest_id = [[[restaurantArray objectAtIndex:[restaurantArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                int menu_v = 0;
-                int mmenu_id = [[[menuArray objectAtIndex:[menuArray count]-1] valueForKey:@"underbarid"] intValue];
-                
-                for (int i = 0; i < productArray.count; i++) {
-                    if ([[[productArray objectAtIndex:i] valueForKey:@"version"] intValue] > prod_v) {
-                        prod_v = [[[productArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                for (int i = 0; i < restaurantArray.count; i++) {
-                    if ([[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue] > rest_v) {
-                        rest_v = [[[restaurantArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                for (int i = 0; i < menuArray.count; i++) {
-                    if ([[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue] > menu_v) {
-                        menu_v = [[[menuArray objectAtIndex:i] valueForKey:@"version"] intValue];
-                    }
-                }
-                
-                [urlString appendFormat:@"&prod_v=%u", prod_v];
-                [urlString appendFormat:@"&mprod_id=%u", mprod_id];
-                [urlString appendFormat:@"&rest_v=%u", rest_v];
-                [urlString appendFormat:@"&mrest_id=%u", mrest_id];
-                [urlString appendFormat:@"&menu_v=%u", menu_v];
-                [urlString appendFormat:@"&mmenu_id=%u", mmenu_id];
-                
-                NSURL *url = [NSURL URLWithString:urlString.copy];
-                NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-                [request setHTTPMethod:@"GET"];
-                NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-                if (!theConnection)
-                {
-                    // Inform the user that the connection failed.
-                    UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
-                                                                                 message:@"Not success"
-                                                                                delegate:self
-                                                                       cancelButtonTitle:@"Ok"
-                                                                       otherButtonTitles:nil];
-                    [connectFailMessage show];
-                    //            }
-                }
-                
-                self.cityWithIdDictionary = [[NSMutableDictionary alloc] init];
-                
-                [self.cityWithIdDictionary setValue: [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]] forKey:@"idCity"];
-                [self.cityWithIdDictionary setValue:[NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]] forKey:@"idLanguage"];
-                
-                [self.content addObjectToCoreDataEntity:@"CheckChangesSettings" withDictionaryOfAttributes:self.cityWithIdDictionary.copy];
                 
             }
         }

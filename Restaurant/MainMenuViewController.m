@@ -49,6 +49,9 @@
 @property (nonatomic, strong) NSMutableArray *promotionsArray;
 @property (strong, nonatomic) NSMutableData *responseData;
 @property (strong, nonatomic) NSMutableArray *imageArray;
+@property (strong, nonatomic) NSMutableArray *arrayOfSubMenuId;
+@property (nonatomic) int subMenuCounter;
+
 - (void)startIconDownload:(MenuDataStruct *)appRecord forIndexPath:(NSIndexPath *)indexPath;
 
 
@@ -113,6 +116,8 @@
 @synthesize viewForPromotion = _viewForPromotion;
 @synthesize imageView = _imageView;
 @synthesize imageArray = _imageArray;
+@synthesize arrayOfSubMenuId = _arrayOfSubMenuId;
+@synthesize subMenuCounter = _subMenuCounter;
 
 //Titles!!!!
 @synthesize titleMain = _titleMain;
@@ -145,9 +150,18 @@
     return _historyArray;
 }
 
-- (IBAction)drop:(id)sender {
-    self.menuId = nil;
-    self.restarauntId = nil;
+- (IBAction)drop:(id)sender
+{
+    if (self.subMenuCounter != 0)
+    {
+        self.subMenuCounter--;
+        self.menuId = [self.db fetchIdParentMenuForChildMenu:self.menuId];
+    }
+    else
+    {
+        self.menuId = nil;
+        self.restarauntId = nil;
+    }
     if (!oneRestaurant)
     {
         if(self.cartButton.isHidden)
@@ -403,6 +417,8 @@
     
     //[self.restorantsButton setBackgroundImage:[UIImage imageNamed:@"gray button.png"] forState:UIControlStateNormal];
     self.restorantsButton.titleLabel.textAlignment = UITextAlignmentCenter;
+    
+    self.subMenuCounter = 0;
     
     //[self.settingsButton setBackgroundImage:[UIImage imageNamed:@"blank-gray-button-md.png"] forState:UIControlStateNormal];
     
@@ -1291,6 +1307,7 @@
                     self.arrayData = nil;
                     self.menuId = menuId;
                     [self.pickerView reloadAllComponents];
+                    self.subMenuCounter++;
                 }
                 else
                 {

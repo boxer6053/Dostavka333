@@ -360,6 +360,31 @@
     return [resultOfARequest copy]; 
 }
 
+-(NSString *)fetchIdParentMenuForChildMenu:(NSString *)MenuId
+{
+    NSManagedObjectContext * context = self.managedObjectContext;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSString *parentMenuID = [[NSString alloc]init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Menus" inManagedObjectContext:context];
+    
+    [request setEntity:entity];
+    
+    request.predicate = [NSPredicate predicateWithFormat:@"underbarid == %@ && action!=2",MenuId];
+    NSManagedObjectContext *moc = context;
+    NSError *error;
+    NSMutableArray *menuIDs = [[moc executeFetchRequest:request error:&error] mutableCopy];
+    
+    for (int i = 0; i<menuIDs.count; i++)
+    {
+        id currentMenu = [menuIDs objectAtIndex:i];
+        if ([currentMenu valueForKey:@"underbarid"] == MenuId)
+            parentMenuID = [currentMenu valueForKey:@"idParentMenu"];
+    }
+    return parentMenuID;
+//        return [resultOfARequest copy];
+}
+
 - (NSArray *)fetchAddressWithPredicate:(NSString *)predicate
 {
     NSManagedObjectContext * context = self.managedObjectContext;

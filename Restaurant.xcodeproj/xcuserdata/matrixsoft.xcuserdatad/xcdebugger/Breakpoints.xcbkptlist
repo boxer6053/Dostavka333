@@ -869,9 +869,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "717"
-         endingLineNumber = "717"
-         landmarkName = "-addToCart:"
-         landmarkType = "5">
+         endingLineNumber = "717">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"

@@ -1360,11 +1360,15 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0)
-    {
-        [self.db deleteAllObjectsFromEntity:@"Cart"];
-        self.arrayOfObjects = nil;
+    if ([[alertView message] isEqualToString:self.titleNoInternet]) {
         [self.pickerView reloadAllComponents];
+    } else {
+        if (buttonIndex == 0)
+        {
+            [self.db deleteAllObjectsFromEntity:@"Cart"];
+            self.arrayOfObjects = nil;
+            [self.pickerView reloadAllComponents];
+        }
     }
 }
 

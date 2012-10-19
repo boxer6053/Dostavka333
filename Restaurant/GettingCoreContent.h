@@ -37,6 +37,7 @@
                      withCounts:(NSString *)productsCounts;
 - (NSString *)fetchDiscountByIdDiscount:(NSString *)idDiscount;
 - (NSArray *)fetchStatusForOrder:(NSString *)idStatus;
+-(NSString *)fetchIdParentMenuForChildMenu:(NSString *)MenuId;
 
 
 - (void)SaveProductToEntityName:(NSString *)entityName

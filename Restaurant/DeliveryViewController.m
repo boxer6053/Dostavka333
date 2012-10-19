@@ -688,6 +688,7 @@
         }
         else
             if ([self.db.cause isEqualToString:@"3"]) {
+                [self.hudView failAndDismissWithTitle:nil];
                 UIAlertView *message = [[UIAlertView alloc] initWithTitle:self.titleError
                                                                   message:self.titleDontRichMinimumPrice
                                                                  delegate:self

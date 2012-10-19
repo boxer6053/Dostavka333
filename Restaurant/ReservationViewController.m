@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSString *titleSorry;
 @property (strong, nonatomic) NSString *testString;
 @property (strong, nonatomic) NSString *titleNumberOfPeople;
+@property (strong, nonatomic) NSString *titleIncorectPhoneNumber;
 
 @end
 
@@ -58,6 +59,7 @@
 @synthesize titleOutOfTables = _titleOutOfTables;
 @synthesize titleSorry = _titleSorry;
 @synthesize titleNumberOfPeople = _titleNumberOfPeople;
+@synthesize titleIncorectPhoneNumber = _titleIncorectPhoneNumber;
 
 
 - (GettingCoreContent *)content
@@ -289,63 +291,75 @@
 {
     if ([self checkForLiteracy])
     {
-    self.dictionary = [[NSMutableDictionary alloc] init];
-    [self.dictionary setObject:self.name.text forKey:@"name"];
-    [self.dictionary setObject:self.numberOfPeople.text forKey:@"numberOfPeople"];
-    [self.dictionary setObject:self.dateOfReservation.text forKey:@"dateOfReservation"];
-    [self.dictionary setObject:self.phone.text forKey:@"phone"];
-    [self.content addObjectToEntity:@"Reservation" withDictionaryOfAttributes:self.dictionary.copy];
-    // NSArray *array = [self.content getArrayFromCoreDatainEntetyName:@"Reservation" withSortDescriptor:@"name"].mutableCopy];
-    // NSArray *array = [[[GettingCoreContent alloc] init] fetchAllObjects];
-    //NSLog(@"objects are - %@", array);
-    NSLog(@"currentRest -%@", restaurantName);
-    
-    NSMutableString *reserve = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/reserv.php?tag=reserv&DBid=3&UUID="];
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-    {
-        NSString *uid = [self createUUID];
-        [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-        //9E3C884C-6E57-4D16-884F-46132825F21E
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [reserve appendString: uid];
-    }
-    else
-        [reserve appendString:[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
-    
-    
-    [reserve appendFormat:@"&idRestaurant=%@&custName=%@&numberOfPeople=%@&time=%@&phone=%@",restaurantId,self.name.text,self.numberOfPeople.text,self.dateOfReservation.text,self.phone.text];
-    reserve = [reserve stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding].copy;
-    NSLog(@"reserve url =%@", reserve);
-    
-    
-    
-    
-    NSURL *url = [NSURL URLWithString:reserve.copy];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    [request setHTTPMethod:@"GET"];
-    NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    if (!theConnection)
-    {
-        // Inform the user that the connection failed.
-        UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
-                                                                     message:@"Not success"
-                                                                    delegate:self
-                                                           cancelButtonTitle:@"Ok"
-                                                           otherButtonTitles:nil];
-        [connectFailMessage show];
-    }
-    }
+        if ([self checkForNumberCount]) {
+            self.dictionary = [[NSMutableDictionary alloc] init];
+            [self.dictionary setObject:self.name.text forKey:@"name"];
+            [self.dictionary setObject:self.numberOfPeople.text forKey:@"numberOfPeople"];
+            [self.dictionary setObject:self.dateOfReservation.text forKey:@"dateOfReservation"];
+            [self.dictionary setObject:self.phone.text forKey:@"phone"];
+            [self.content addObjectToEntity:@"Reservation" withDictionaryOfAttributes:self.dictionary.copy];
+            // NSArray *array = [self.content getArrayFromCoreDatainEntetyName:@"Reservation" withSortDescriptor:@"name"].mutableCopy];
+            // NSArray *array = [[[GettingCoreContent alloc] init] fetchAllObjects];
+            //NSLog(@"objects are - %@", array);
+            NSLog(@"currentRest -%@", restaurantName);
+            
+            NSMutableString *reserve = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/reserv.php?tag=reserv&DBid=3&UUID="];
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+            {
+                NSString *uid = [self createUUID];
+                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+                //9E3C884C-6E57-4D16-884F-46132825F21E
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [reserve appendString: uid];
+            }
+            else
+                [reserve appendString:[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+            
+            
+            [reserve appendFormat:@"&idRestaurant=%@&custName=%@&numberOfPeople=%@&time=%@&phone=%@",restaurantId,self.name.text,self.numberOfPeople.text,self.dateOfReservation.text,self.phone.text];
+            reserve = [reserve stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding].copy;
+            NSLog(@"reserve url =%@", reserve);
+            
+            
+            
+            
+            NSURL *url = [NSURL URLWithString:reserve.copy];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [request setHTTPMethod:@"GET"];
+            NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            if (!theConnection)
+            {
+                // Inform the user that the connection failed.
+                UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
+                                                                             message:@"Not success"
+                                                                            delegate:self
+                                                                   cancelButtonTitle:@"Ok"
+                                                                   otherButtonTitles:nil];
+                [connectFailMessage show];
+            }
+        }
         else
         {
-            UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"Fil all rows with '*'."
+            UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:self.titleIncorectPhoneNumber
                                                                          message:nil //@"Not success"
                                                                         delegate:self
                                                                cancelButtonTitle:@"Ok"
                                                                otherButtonTitles:nil];
             [connectFailMessage show];
+            
         }
-   
         
+        
+        
+
+    } else {
+        UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"Fil all rows with '*'."
+                                                                     message:nil //@"Not success"
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Ok"
+                                                           otherButtonTitles:nil];
+        [connectFailMessage show];
+    }
     
 }
 
@@ -539,6 +553,17 @@
             return NO;
 }
 
+- (BOOL)checkForNumberCount
+{
+    NSString *phoneNumberString = [self.phone text];
+    int phoneNumberCount = [phoneNumberString length];
+    
+    if ((phoneNumberCount > 6 && phoneNumberCount < 11)) {
+        return YES;
+    } else
+        return NO;
+}
+
 
 
 -(void)setAllTitlesOnThisPage
@@ -619,10 +644,12 @@
             self.titleEnterJustNombers = [[array objectAtIndex:i] valueForKey:@"title"];
         }
         
-        else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Reserve table"])
+        else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Phone Number Digit Must be min 7"])
         {
-            [self.titleReservationTableBar setTitle: [[array objectAtIndex:i] valueForKey:@"title"]];
+            self.titleIncorectPhoneNumber = [[array objectAtIndex:i] valueForKey:@"title"];
         }
+        
+        
     }
     
 }

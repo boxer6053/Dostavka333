@@ -35,6 +35,7 @@
 
 @synthesize kindOfMenu = _kindOfMenu;
 @synthesize arrayData = _arrayData;
+@synthesize currentPictures = _currentPictures;
 @synthesize db = _db;
 @synthesize gmGridView = _gmGridView;
 @synthesize viewForOutput = _viewForOutput;
@@ -63,7 +64,15 @@
     [View setAlpha:1];
     [UIView commitAnimations];
 }
-
+-(NSDictionary *)currentPictures
+{
+    if(!_currentPictures)
+    {
+        _currentPictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
+        return _currentPictures;
+    }
+    return _currentPictures;
+}
 - (NSMutableArray *)arrayData
 {
     if(!_arrayData)
@@ -131,13 +140,13 @@
     [super viewDidAppear:YES];
     
     //fetching pictures
-    NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
+   // NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
     ProductDataStruct *dataStruct;
     for (int i = 0; i < self.arrayData.count; i++)
     {
         dataStruct = [self.arrayData objectAtIndex:i];
-        NSData *dataOfPicture = [[pictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[pictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlForImage];
 //        dataStruct.link = url.description;
@@ -177,123 +186,7 @@
 	self.imageDownloadsInProgress = [[NSMutableDictionary alloc] init];
     self.navigationItem.title = self.kindOfMenu.title;
     
-    //self.CartBarItem.image = [UIImage imageNamed:@"Cart.png"];
-//    self.navigationItem.leftBarButtonItem.
-	pageControlBeingUsed = NO;
-    
-//	NSArray *colors = [NSArray arrayWithObjects:[UIColor redColor], [UIColor greenColor], [UIColor blueColor], nil];
-//	for (int i = 0; i < colors.count; i++) 
-//    {
-//		CGRect frame;
-//		frame.origin.x = self.scrollView.frame.size.width * i;
-//		frame.origin.y = 0;
-//		frame.size = self.scrollView.frame.size;
-//		
-//		UIView *subview = [[UIView alloc] initWithFrame:frame];
-//		subview.backgroundColor = [colors objectAtIndex:i];
-//		[self.scrollView addSubview:subview];
-//	}
-    
-    
-//    int w = 0;
-//    int j = 1;
-//    int withSize = 0;
-//
-//    NSMutableArray *temporaryArray = [[NSMutableArray alloc] init];
-//    
-//    CGRect frame;
-//    CGRect imageFrame;
-//    CGRect nameFrame;
-//    CGRect priceFrame;
-//    CGRect descriptionFrame;
-//    NSNumber *temporary = [NSNumber alloc];
-//    
-//	for (int i = 0; i < self.arrayData.count; i++)
-//    {
-//        if ((i%3==0) && (i!=0))
-//        {
-//            w = 0;
-//            frame.origin.x = 107 * w + withSize;
-//            frame.origin.y = 111 * j;
-//            j++;
-//            w++;
-//            if (i%9 == 0)
-//            {
-//                w = 0;
-//                withSize += 320;
-//                frame.origin.x = 107 * w + withSize;
-//                frame.origin.y = 0;
-//                w++;
-//                j = 1;
-//            }
-//        }
-//        else 
-//        {
-//            frame.origin.x = 107 * w + withSize;
-//            w++;
-//        }
-//    
-//        frame.size = CGSizeMake(106,110);
-//        //UIView *elementView = [[UIView alloc] initWithFrame:frame];
-//        UIButton *element = [[UIButton alloc] initWithFrame:frame];
-//        element.backgroundColor = [UIColor blueColor];
-//        
-//        nameFrame.origin.x = 0;
-//        nameFrame.origin.y = 70;
-//        nameFrame.size = CGSizeMake(64,21);
-//        UILabel *nameLabel = [[UILabel alloc] initWithFrame:nameFrame];
-//        nameLabel.text = [[self.arrayData objectAtIndex:i] title];
-//        nameLabel.textAlignment = UITextAlignmentRight;
-//        nameLabel.numberOfLines = 1;
-//        nameLabel.minimumFontSize = 12;
-//        nameLabel.adjustsFontSizeToFitWidth = YES;
-//        [element addSubview:nameLabel];
-//        
-//        priceFrame.origin.x = 64;
-//        priceFrame.origin.y = 70;
-//        priceFrame.size = CGSizeMake(42,21);
-//        UILabel *priceLabel = [[UILabel alloc] initWithFrame:priceFrame];
-//        priceLabel.text = [[self.arrayData objectAtIndex:i]price];//[NSString stringWithFormat:@"%@", [[self.arrayData objectAtIndex:i]productId]];
-//        priceLabel.textAlignment = UITextAlignmentRight;
-//        [element addSubview:priceLabel];
-//        
-//        descriptionFrame.origin.x = 0;
-//        descriptionFrame.origin.y = 90;
-//        descriptionFrame.size = CGSizeMake(106,15);
-//        UILabel *descriptionLabel = [[UILabel alloc] initWithFrame:descriptionFrame];
-//        descriptionLabel.text = [[self.arrayData objectAtIndex:i] descriptionText];
-//        descriptionLabel.textAlignment = UITextAlignmentRight;
-//        descriptionLabel.numberOfLines = 1;
-//        descriptionLabel.minimumFontSize = 8;
-//        descriptionLabel.adjustsFontSizeToFitWidth = YES;
-//        [element addSubview:descriptionLabel];
-//        
-//        imageFrame.size = CGSizeMake(106,80);
-//        UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
-//        if ([[self.arrayData objectAtIndex:i] image] == nil)
-//        {
-//            [imageView setImage:[UIImage imageNamed:@"Placeholder.png"]];
-//        }
-//        else
-//        {
-//            [imageView setImage:[[self.arrayData objectAtIndex:i] image]];
-//        }
-//        
-//        [element addSubview:imageView];
-//        [self.scrollView addSubview:element];
-//        [temporaryArray addObject:[temporary initWithInt:[self.view.subviews indexOfObject:self.view.subviews.lastObject]]];
-//    }
-//    
-//    //CGFloat countOfPages = self.arrayData.count/9;
-//	self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * self.arrayData.count/9, 370);
-//	
-//	self.pageControl.currentPage = 0;
-//	self.pageControl.numberOfPages =  (int) self.arrayData.count/9;
-    
-//    CGRect frame;
-//    frame.origin.y = -10;
-//    frame.origin.x = -10;
-//    frame.size = CGSizeMake(320, 450);
+
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.viewForOutput.bounds];
     //gmGridView.frame.origin.x = -30;
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

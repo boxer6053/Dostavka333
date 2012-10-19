@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *arrayData;
+@property (strong, nonatomic) NSDictionary *currentPictures;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 @property (nonatomic, strong) MenuDataStruct *kindOfMenu;
 @property (strong, nonatomic) NSNumber *selectedRow;

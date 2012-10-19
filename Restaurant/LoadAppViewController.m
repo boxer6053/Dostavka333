@@ -76,6 +76,28 @@
     }
 }
 
+- (NSString *)createUUID
+{
+    // Create universally unique identifier (object)
+    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+    
+    // Get the string representation of CFUUID object.
+    NSString *uuidStr = (__bridge NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
+    
+    // If needed, here is how to get a representation in bytes, returned as a structure
+    // typedef struct {
+    //   UInt8 byte0;
+    //   UInt8 byte1;
+    //   ...
+    //   UInt8 byte15;
+    // } CFUUIDBytes;
+    //CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
+    
+    //CFRelease(uuidObject);
+    
+    return uuidStr;
+}
+
 - (void)awakeFromNib
 {
     if (checkConnection.hasConnectivity)
@@ -129,6 +151,21 @@
             NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
             
             NSMutableString *myString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=params&idPhone=1&"];
+            
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+            {
+                NSString *uid = [self createUUID];
+                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+                //9E3C884C-6E57-4D16-884F-46132825F21E
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [myString appendFormat:@"&UUID=%@",uid];
+
+            }
+            else
+                [myString appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+
+            
             [myString appendFormat:@"&city_v=%@",maxCityVersion];
             [myString appendFormat:@"&mcity_id=%@",maxCityId];
             

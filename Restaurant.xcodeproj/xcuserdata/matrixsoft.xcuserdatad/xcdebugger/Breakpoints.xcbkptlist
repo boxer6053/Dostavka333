@@ -13,8 +13,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "460"
          endingLineNumber = "460"
-         landmarkName = "-animationForPromotions"
-         landmarkType = "5">
+         landmarkName = "@implementation MainMenuViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -26,8 +26,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "444"
          endingLineNumber = "444"
-         landmarkName = "-viewDidLoad"
-         landmarkType = "5">
+         landmarkName = "@implementation MainMenuViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -941,8 +941,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1420"
          endingLineNumber = "1420"
-         landmarkName = "-actionSheet:clickedButtonAtIndex:"
-         landmarkType = "5">
+         landmarkName = "@implementation MainMenuViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -954,8 +954,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "1361"
          endingLineNumber = "1361"
-         landmarkName = "-alertView:clickedButtonAtIndex:"
-         landmarkType = "5">
+         landmarkName = "@implementation MainMenuViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"

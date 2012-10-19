@@ -654,7 +654,7 @@
     subView.textView.text = [[self.promotionsArray objectAtIndex:currentImage] descriptionText];
     [self.view addSubview:subView];
 }
-
+//
 - (NSString *)createUUID
 {
     // Create universally unique identifier (object)

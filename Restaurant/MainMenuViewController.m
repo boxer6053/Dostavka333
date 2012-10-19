@@ -513,11 +513,6 @@
                                        userInfo:nil
                                         repeats:NO];
     
-    if(fromSettings) //to stop scrolling to the beginning when come in previous screen
-    {
-        [self.pickerView reloadAllComponents];
-        fromSettings = NO;
-    }
 }
 
 -(void) disappearOfPromotionAtTheFirstTime
@@ -568,7 +563,12 @@
     [self.cartButton setTitle:self.titleCart forState:UIControlStateNormal];
     [self.drop setTitle:self.titleBack forState:UIControlStateNormal];
     
-    [self.pickerView reloadAllComponents];
+//    [self.pickerView reloadAllComponents];
+    if(fromSettings) //to stop scrolling to the beginning when come in previous screen
+    {
+        [self.pickerView reloadAllComponents];
+        fromSettings = NO;
+    }
 }
 
 
@@ -600,7 +600,12 @@
         [self performSelector:@selector(cartButton:)withObject:nil];
     }
     
-    [super viewWillAppear:animated];
+//    [super viewWillAppear:animated];
+//    if(fromSettings) //to stop scrolling to the beginning when come in previous screen
+//    {
+//        [self.pickerView reloadAllComponents];
+//        fromSettings = NO;
+//    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated

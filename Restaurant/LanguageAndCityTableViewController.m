@@ -322,6 +322,11 @@
                         }
 
                     } else {
+                        if (!self.isCity)
+                        {
+                            [Singleton titlesTranslation_withISfromSettings:YES];
+                        }
+
                         [self performSelector:@selector(complete:) withObject:nil];
                     }
                     
@@ -517,6 +522,11 @@
                     }
 
                 } else {
+                    if (!self.isCity)
+                    {
+                        [Singleton titlesTranslation_withISfromSettings:YES];
+                    }
+
                     [self performSelector:@selector(complete:) withObject:nil];
                 }
                 

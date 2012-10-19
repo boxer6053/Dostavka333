@@ -13,7 +13,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "460"
          endingLineNumber = "460"
-         landmarkName = "-viewDidLoad"
+         landmarkName = "-animationForPromotions"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -64,9 +64,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "435"
-         endingLineNumber = "435"
-         landmarkName = "-toOrder:"
-         landmarkType = "5">
+         endingLineNumber = "435">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -77,9 +75,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "491"
-         endingLineNumber = "491"
-         landmarkName = "-toOrder:"
-         landmarkType = "5">
+         endingLineNumber = "491">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -90,9 +86,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "600"
-         endingLineNumber = "600"
-         landmarkName = "-saveAddress:"
-         landmarkType = "5">
+         endingLineNumber = "600">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -103,9 +97,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "604"
-         endingLineNumber = "604"
-         landmarkName = "-saveAddress:"
-         landmarkType = "5">
+         endingLineNumber = "604">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -116,9 +108,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "608"
-         endingLineNumber = "608"
-         landmarkName = "-toAddressList:"
-         landmarkType = "5">
+         endingLineNumber = "608">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -129,9 +119,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "620"
-         endingLineNumber = "620"
-         landmarkName = "-prepareForSegue:sender:"
-         landmarkType = "5">
+         endingLineNumber = "620">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -272,9 +260,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "628"
-         endingLineNumber = "628"
-         landmarkName = "-connection:didReceiveResponse:"
-         landmarkType = "5">
+         endingLineNumber = "628">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -885,6 +871,84 @@
          startingLineNumber = "717"
          endingLineNumber = "717"
          landmarkName = "-addToCart:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372328016.8531"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "152"
+         endingLineNumber = "152"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372332030.223479"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "461"
+         endingLineNumber = "461"
+         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372332030.223479"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "707"
+         endingLineNumber = "707"
+         landmarkName = "-connection:didReceiveResponse:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372332030.223479"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "711"
+         endingLineNumber = "711"
+         landmarkName = "-connection:didReceiveData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372332030.223479"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "716"
+         endingLineNumber = "716"
+         landmarkName = "-connection:didFailWithError:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/LanguageAndCityTableViewController.m"
+         timestampString = "372332030.223479"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "722"
+         endingLineNumber = "722"
+         landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

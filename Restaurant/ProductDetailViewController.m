@@ -32,6 +32,8 @@
 @property (strong, nonatomic) UIButton *tellFriendButton;
 @property (strong, nonatomic) UIActivityIndicatorView *indicator;
 @property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) GettingCoreContent *content;
+@property (strong, nonatomic) NSString *currentEmail;
 
 //titles
 @property (strong, nonatomic) NSString *titleWihtDiscounts;
@@ -89,6 +91,8 @@
 @synthesize indicator = _indicator;
 @synthesize textView = _textView;
 @synthesize titleAddetItemToTheCart = _titleAddetItemToTheCart;
+@synthesize content = _content;
+@synthesize currentEmail = _currentEmail;
 
 //titles
 @synthesize titleWihtDiscounts = _titleWihtDiscounts;
@@ -168,15 +172,50 @@
     }
 }
 
+- (GettingCoreContent *)content
+{
+    if(!_content)
+       {
+           _content = [[GettingCoreContent alloc] init];
+       }
+    return _content;
+}
+
+-(NSString* )findEmail
+{
+    NSArray *menuTranslArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus_translation" withSortDescriptor:@"underbarid"]];
+    NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
+    NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants_translation" withSortDescriptor:@"underbarid"]];
+    
+    NSString *memRestId;
+    
+    for (int i = 0; i < menuArray.count; i++)
+    {
+        if ([[[menuTranslArray objectAtIndex:i] valueForKey:@"idMenu"] isEqualToString:self.product.idMenu]) {
+            memRestId = [[menuArray objectAtIndex:i] valueForKey:@"idRestaurant"];
+        }
+    }
+    
+    for (int i = 0; i < restaurantArray.count; i++)
+    {
+        if ([[[restaurantArray objectAtIndex:i] valueForKey:@"idRestaurant"] isEqualToString:memRestId]) {
+            _currentEmail = [[restaurantArray objectAtIndex:i] valueForKey:@"metro"];
+        }
+    }
+    
+return _currentEmail;
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
     {
+        [self findEmail];
         NSLog(@"Twitter");
         if ([TWTweetComposeViewController canSendTweet])
         {
             TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
-            [tweetSheet setInitialText:[NSString stringWithFormat:@"I like %@ from www.matrix-soft.org =)", self.product.title]];
+            [tweetSheet setInitialText:[NSString stringWithFormat:@"I like %@ from %@",self.product.title, _currentEmail]];
             
             [self presentModalViewController:tweetSheet animated:YES];
         }
@@ -193,8 +232,7 @@
     }
     if (buttonIndex == 1)
     {
-//        self.facebookView = [[UIView alloc] initWithFrame:CGRectMake(0,110, 320, 350)];
-        
+        [self findEmail];
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         
         if (!self.facebookView)
@@ -202,22 +240,11 @@
             self.facebookView = [[UIView alloc] initWithFrame:self.view.frame];
             self.facebookView.backgroundColor = [UIColor whiteColor];
         }
-//        UITextView *text = [[UITextView alloc] initWithFrame:CGRectMake(self.facebookView.bounds.origin.x, self.facebookView.bounds.origin.y, self.facebookView.bounds.size.width/2, self.facebookView.bounds.size.height)];
-        
 
 
         if (!self.loginview)
         {
-//            if ([[FBSession activeSession] isOpen])
-//            {
-////                [[FBSession activeSession] close];
-//                //_loginview = nil;
-//                self.loginview = [[FBLoginView alloc] init];
-//            }
-//            else
-//            {
             self.loginview = [[FBLoginView alloc] initWithPermissions:[NSArray arrayWithObject:@"status_update"]];
-//            }
             self.loginview.frame = CGRectOffset(self.loginview.frame, 5, 5);
             self.loginview.delegate = self;
             [self.loginview sizeToFit];
@@ -230,10 +257,11 @@
             self.fbProfilePictureView = [[FBProfilePictureView alloc] initWithFrame:CGRectMake(20, 70, 100, 100)];
             [self.facebookView addSubview:self.fbProfilePictureView];
         }
+
         
         self.textView = [[UITextView alloc] initWithFrame:CGRectMake(127, 70, 173, 100)];
         [self.facebookView addSubview:self.textView];
-        self.textView.text = [NSString stringWithFormat:@"I like %@ from www.matrix-soft.org =)", self.product.title];
+        self.textView.text = [NSString stringWithFormat:@"I like %@ from %@",self.product.title, _currentEmail];
         [self.textView setReturnKeyType:UIReturnKeyDone];
         [self.textView setDelegate:self];
         [self.textView.layer setBorderColor:[[UIColor colorWithRed:59.0f/255.0f green:89.0f/255.0f blue:182.0f/255.0f alpha:1.0f] CGColor]];
@@ -252,15 +280,6 @@
         [self.postOnWallButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
         [self.postOnWallButton addTarget:self action:@selector(postOnWall) forControlEvents:UIControlEventTouchUpInside];
         [self.facebookView addSubview:self.postOnWallButton];
-        
-//        self.tellFriendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//        self.tellFriendButton.frame = CGRectMake(84, 357, 150, 37);
-//        [self.tellFriendButton setTitle:@"Tell a Friend" forState:UIControlStateNormal];
-//        [self.tellFriendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-//        self.tellFriendButton.titleLabel.textColor = [UIColor blueColor];
-//        self.tellFriendButton.titleLabel.textAlignment = UITextAlignmentCenter;
-//        [self.tellFriendButton addTarget:self action:@selector(tellFriend) forControlEvents:UIControlEventTouchUpInside];
-//        [self.facebookView addSubview:self.tellFriendButton];
 
         NSLog(@"Facebook");
 

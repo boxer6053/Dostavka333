@@ -601,6 +601,7 @@
                                               delegate:self
                                      cancelButtonTitle:self.titleCancel
                                      otherButtonTitles:self.titleYES, nil];
+        NSLog(@"pressed button 1");
     }
     else
     {
@@ -609,7 +610,7 @@
                                               delegate:self
                                      cancelButtonTitle:self.titleCancel
                                      otherButtonTitles:self.titleYES, nil];
-      
+             NSLog(@"pressed button 2"); 
     }
     
     [alertView show];

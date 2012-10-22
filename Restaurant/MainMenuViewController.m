@@ -507,42 +507,42 @@
                                        userInfo:nil
                                         repeats:YES];
     
-        [NSTimer scheduledTimerWithTimeInterval:5.0
-                                         target:self
-                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
-                                       userInfo:nil
-                                        repeats:NO];
+//        [NSTimer scheduledTimerWithTimeInterval:5.0
+//                                         target:self
+//                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
+//                                       userInfo:nil
+//                                        repeats:NO];
     
 }
 
--(void) disappearOfPromotionAtTheFirstTime
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [_viewForPromotion setAlpha:0];
-    [UIView commitAnimations];
-    
-    [NSTimer scheduledTimerWithTimeInterval:6.0
-                                     target:self
-                                   selector:@selector(disappearOfPromotion)
-                                   userInfo:nil
-                                    repeats:YES];
-}
-
--(void) disappearOfPromotion
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [_viewForPromotion setAlpha:0];
-    [UIView commitAnimations];
-}
+//-(void) disappearOfPromotionAtTheFirstTime
+//{
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:0];
+//    [UIView commitAnimations];
+//    
+//    [NSTimer scheduledTimerWithTimeInterval:6.0
+//                                     target:self
+//                                   selector:@selector(disappearOfPromotion)
+//                                   userInfo:nil
+//                                    repeats:YES];
+//}
+//
+//-(void) disappearOfPromotion
+//{
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:0];
+//    [UIView commitAnimations];
+//}
 
 - (void)changingAnimation
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:1];
-    [_viewForPromotion setAlpha:1];
-    [UIView commitAnimations];
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:1];
+//    [UIView commitAnimations];
     
     if (currentImage < self.promotionsArray.count - 1)
     {

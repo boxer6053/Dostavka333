@@ -261,7 +261,7 @@ return _currentEmail;
         
         self.textView = [[UITextView alloc] initWithFrame:CGRectMake(127, 70, 173, 100)];
         [self.facebookView addSubview:self.textView];
-        self.textView.text = [NSString stringWithFormat:@"%@ \n I like %@ from %@",self.product.link,self.product.title, _currentEmail];
+        self.textView.text = [NSString stringWithFormat:@"<img src=\"%@\"/> \n I like %@ from %@",self.product.link,self.product.title, _currentEmail];
         [self.textView setReturnKeyType:UIReturnKeyDone];
         [self.textView setDelegate:self];
         [self.textView.layer setBorderColor:[[UIColor colorWithRed:59.0f/255.0f green:89.0f/255.0f blue:182.0f/255.0f alpha:1.0f] CGColor]];

@@ -169,6 +169,7 @@
     hitView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HIT1.png"]];
     newsItemView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"New1.png"]];
     
+    NSLog(@"title %@", self.titleRemoveToFavotites);
     [self setAllTitlesOnThisPage];
 }
 
@@ -587,22 +588,22 @@
     for (int i = 0; i <array.count; i++)
     {
         
-        if ([[[array objectAtIndex:i] valueForKey:@"code"] isEqualToString:@"Remove from favorites?"])
+        if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Remove from favorites?"])
         {
             self.titleRemoveToFavotites = [[array objectAtIndex:i] valueForKey:@"title"];
         }
         
-        if ([[[array objectAtIndex:i] valueForKey:@"code"] isEqualToString:@"YES"])
+        if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"YES"])
         {
             self.titleYES = [[array objectAtIndex:i] valueForKey:@"title"];
         }
         
-        if ([[[array objectAtIndex:i] valueForKey:@"code"] isEqualToString:@"Cancel"])
+        if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Cancel"])
         {
             self.titleCancel = [[array objectAtIndex:i] valueForKey:@"title"];
         }
         
-        if ([[[array objectAtIndex:i] valueForKey:@"code"] isEqualToString:@"Removed %@ from favorites."])
+        if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Removed %@ from favorites."])
         {
             self.titleRemovedFav = [[array objectAtIndex:i] valueForKey:@"title"];
         }

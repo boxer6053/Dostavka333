@@ -170,6 +170,8 @@
 		F5F5706616175814003CA47C /* arrow1_red.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F5706016175814003CA47C /* arrow1_red.png */; };
 		F5F5706716175814003CA47C /* arrow2_green.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F5706116175814003CA47C /* arrow2_green.png */; };
 		F5F5706816175814003CA47C /* arrow2_red.png in Resources */ = {isa = PBXBuildFile; fileRef = F5F5706216175814003CA47C /* arrow2_red.png */; };
+		F5FA300516352AA100E8BE4D /* ReservationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F58EC35415DB8A4E00ADBA80 /* ReservationViewController.h */; };
+		F5FA300616352AAF00E8BE4D /* Restaurant-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 781B8F151546DB870074EDBD /* Restaurant-Prefix.pch */; };
 		F5FA62481580D39700FBF70A /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F5FA62471580D39700FBF70A /* FavoritesTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -712,6 +714,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5FA300616352AAF00E8BE4D /* Restaurant-Prefix.pch in Headers */,
+				F5FA300516352AA100E8BE4D /* ReservationViewController.h in Headers */,
 				F5513A0915DA3AA90083E075 /* IconDownloader.h in Headers */,
 				F5513A0A15DA3AA90083E075 /* LoadAppViewController.h in Headers */,
 				F5513A0B15DA3AA90083E075 /* MainMenuViewController.h in Headers */,
@@ -1043,6 +1047,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "~/Library/Vendor/SSToolkit ~/Library/GMGridView";
 			};
@@ -1071,6 +1076,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "~/Library/Vendor/SSToolkit ~/Library/GMGridView";
 				VALIDATE_PRODUCT = YES;
@@ -1107,6 +1113,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "~/Vendor/SSToolkit ~/GMGridView";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1142,6 +1149,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "54350DFC-9C0D-4C38-84ED-A3911A1D1A7B";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "~/Vendor/SSToolkit ~/GMGridView";
 				WRAPPER_EXTENSION = app;
 			};

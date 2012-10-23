@@ -111,6 +111,7 @@
     </entity>
     <entity name="Pictures" representedClassName="Pictures" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="underbarid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
@@ -226,6 +227,7 @@
     <elements>
         <element name="Addresses" positionX="0" positionY="0" width="128" height="255"/>
         <element name="Cart" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="CheckChangesSettings" positionX="160" positionY="192" width="128" height="75"/>
         <element name="Cities" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Cities_translation" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Currencies" positionX="0" positionY="0" width="128" height="120"/>
@@ -236,7 +238,7 @@
         <element name="Languages" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Menus" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Menus_translation" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Pictures" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="Pictures" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Products" positionX="0" positionY="0" width="128" height="270"/>
         <element name="Products_translation" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Promotions" positionX="0" positionY="0" width="128" height="105"/>
@@ -249,6 +251,5 @@
         <element name="Statuses_translation" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Titles" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Titles_translation" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="CheckChangesSettings" positionX="160" positionY="192" width="128" height="75"/>
     </elements>
 </model>

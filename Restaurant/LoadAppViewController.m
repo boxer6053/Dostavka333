@@ -107,7 +107,21 @@
             //tag=init http request
             NSLog(@"<<<<<<<<<Generating init request>>>>>>>>>>");
             self.isFirstTime = YES;
-            NSString *order = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=init&idPhone=1&"];
+            NSMutableString *order = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=init&idPhone=1"];
+            
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+            {
+                NSString *uid = [self createUUID];
+                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+                //9E3C884C-6E57-4D16-884F-46132825F21E
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [order appendFormat:@"&UUID=%@",uid];
+                
+            }
+            else
+                [order appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+            
             NSURL *url = [NSURL URLWithString:order];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
             [request setHTTPMethod:@"GET"];
@@ -150,7 +164,7 @@
             NSNumber *maxInterafaceId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Titles"];
             NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
             
-            NSMutableString *myString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=params&idPhone=1&"];
+            NSMutableString *myString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=params&idPhone=1"];
             
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
             {

@@ -1107,9 +1107,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../FacebookSDK\"",
-					"\"$(SRCROOT)/../../Documents/FacebookSDK\"",
-					"\"$(SRCROOT)/../../../../Documents/FacebookSDK\"",
+					"\"/Users/macbook/Documents/FacebookSDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Restaurant/Restaurant-Prefix.pch";
@@ -1139,9 +1137,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../FacebookSDK\"",
-					"\"$(SRCROOT)/../../Documents/FacebookSDK\"",
-					"\"$(SRCROOT)/../../../../Documents/FacebookSDK\"",
+					"\"/Users/macbook/Documents/FacebookSDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Restaurant/Restaurant-Prefix.pch";

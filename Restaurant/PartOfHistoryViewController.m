@@ -253,8 +253,8 @@
                     [statusLabel setTextAlignment:NSTextAlignmentCenter];
                     [statusLabel setBackgroundColor:[UIColor clearColor]];
                     [self.scrollView addSubview:statusLabel];
-                }
-                
+        }
+        
             } else {
                 [firstArrow setImage:[UIImage imageNamed:@"arrow1_red.png"]];
                 [self.scrollView addSubview:firstArrow];

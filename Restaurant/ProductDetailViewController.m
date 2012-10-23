@@ -10,8 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SSToolkit/SSToolkit.h"
 #import "checkConnection.h"
-
 #import <FacebookSDK/FacebookSDK.h>
+#import <Social/Social.h>
 
 @interface ProductDetailViewController () <FBLoginViewDelegate, UITextViewDelegate>
 {
@@ -34,6 +34,7 @@
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) GettingCoreContent *content;
 @property (strong, nonatomic) NSString *currentEmail;
+@property (strong, nonatomic) UIImage *postImage;
 
 //titles
 @property (strong, nonatomic) NSString *titleWihtDiscounts;
@@ -93,6 +94,7 @@
 @synthesize titleAddetItemToTheCart = _titleAddetItemToTheCart;
 @synthesize content = _content;
 @synthesize currentEmail = _currentEmail;
+@synthesize postImage = _postImage;
 
 //titles
 @synthesize titleWihtDiscounts = _titleWihtDiscounts;
@@ -206,18 +208,50 @@
 return _currentEmail;
 }
 
+- (void) postToFB:(UIImage*)image:(NSString*)message
+{
+   NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
+    [params setObject:UIImagePNGRepresentation(image) forKey:@"picture"];
+    [params setObject:(NSString*)message forKey:@"message"];
+    
+    [FBRequestConnection startWithGraphPath:@"me/photos"
+                                 parameters:params
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              
+                              NSString *alertText;
+                              if (error) {
+                                  alertText = [NSString stringWithFormat:
+                                               @"error: domain = %@, code = %d",
+                                               error.domain, error.code];
+                                  [_indicator stopAnimating];
+                                  [self.facebookView removeFromSuperview];
+                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
+                              } else {
+                                  alertText = [NSString stringWithFormat:@"Posted successfully"];
+                                  [_indicator stopAnimating];
+                                  [self.facebookView removeFromSuperview];
+                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
+                              }
+                              [[[UIAlertView alloc] initWithTitle:@"Result"
+                                                          message:alertText
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK!"
+                                                otherButtonTitles:nil] show];
+                          }];
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0)
     {
         [self findEmail];
-        NSLog(@"Twitter");
-        if ([TWTweetComposeViewController canSendTweet])
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
         {
-            TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
-            [tweetSheet setInitialText:[NSString stringWithFormat:@"%@ \n I like %@ from %@",self.product.link,self.product.title, _currentEmail]];
-            
-            [self presentModalViewController:tweetSheet animated:YES];
+            SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            [tweetSheet setInitialText:[NSString stringWithFormat:@"I like %@ from %@",self.product.title, _currentEmail]];
+            [tweetSheet addImage:_product.image];
+            [self presentViewController:tweetSheet animated:YES completion:nil];
         }
         else
         {
@@ -244,7 +278,7 @@ return _currentEmail;
 
         if (!self.loginview)
         {
-            self.loginview = [[FBLoginView alloc] initWithPermissions:[NSArray arrayWithObject:@"status_update"]];
+            self.loginview = [[FBLoginView alloc] initWithReadPermissions:[NSArray arrayWithObject:@"status_update"]];
             self.loginview.frame = CGRectOffset(self.loginview.frame, 5, 5);
             self.loginview.delegate = self;
             [self.loginview sizeToFit];
@@ -261,7 +295,7 @@ return _currentEmail;
         
         self.textView = [[UITextView alloc] initWithFrame:CGRectMake(127, 70, 173, 100)];
         [self.facebookView addSubview:self.textView];
-        self.textView.text = [NSString stringWithFormat:@"<img src=\"%@\"/> \n I like %@ from %@",self.product.link,self.product.title, _currentEmail];
+        self.textView.text = [NSString stringWithFormat:@"I like %@ from %@",self.product.title, _currentEmail];
         [self.textView setReturnKeyType:UIReturnKeyDone];
         [self.textView setDelegate:self];
         [self.textView.layer setBorderColor:[[UIColor colorWithRed:59.0f/255.0f green:89.0f/255.0f blue:182.0f/255.0f alpha:1.0f] CGColor]];
@@ -320,14 +354,20 @@ return _currentEmail;
     [self.facebookView addSubview:self.indicator];
     [self.indicator startAnimating];
     
-    NSString *message = self.textView.text;
-    //[NSString stringWithFormat:@"I like %@ from www.matrix-soft.org =)", self.product.title];
     
-    [FBRequestConnection startForPostStatusUpdate:message
-                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                    
-                                    [self showAlert:message result:result error:error];
-                                }];
+    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)
+{
+    // No permissions found in session, ask for it
+    [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
+                                               defaultAudience:FBSessionDefaultAudienceFriends
+                                             completionHandler:^(FBSession *session, NSError *error)
+     {
+         // If permissions granted, publish the story
+         if (!error)[self postToFB:_product.image: _textView.text];
+     }];
+}
+    // If permissions present, publish the story
+    else [self postToFB:_product.image: _textView.text];
 }
 
 - (void) tellFriend
@@ -440,7 +480,7 @@ return _currentEmail;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self findEmail];
     [self setAllTitlesOnThisPage];
     
 //    self.captionLabel.layer.borderColor = [UIColor darkGrayColor].CGColor;

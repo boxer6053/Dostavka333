@@ -7,8 +7,11 @@
 //
 
 #import "SettingsViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
+#import <QuartzCore/QuartzCore.h>
+#import <Social/Social.h>
 
-@interface SettingsViewController ()
+@interface SettingsViewController () <FBLoginViewDelegate, UITextViewDelegate>
 {
     BOOL isStyle;
     BOOL isCurrency;
@@ -36,11 +39,20 @@
 @property (nonatomic, strong) NSString *titleSosialNetworks;
 @property (nonatomic, strong) NSString *titleCancel;
 
+@property (strong, nonatomic) UIView *facebookView;
+@property (strong, nonatomic) FBProfilePictureView *fbProfilePictureView;
+@property (strong, nonatomic) FBLoginView *loginview;
+@property (strong, nonatomic) UITextView *textView;
+@property (strong, nonatomic) UIButton *postOnWallButton;
+@property (strong, nonatomic) UIActivityIndicatorView *indicator;
+@property (strong, nonatomic) id<FBGraphUser> loggedInUser;
+
 @end
 
 @implementation SettingsViewController
 
 @synthesize currencyArray = _currencyArray;
+@synthesize loggedInUser = _loggedInUser;
 
 //Titles
 @synthesize titleSettings = _titleSettings;
@@ -347,16 +359,79 @@
     {
         if (buttonIndex == 0)
         {
-            NSLog(@"Twitter");
-            [[NSUserDefaults standardUserDefaults] setValue:@"http://twitter.com" forKey:@"social"];
-            [self performSegueWithIdentifier:@"Social" sender:nil];
+            //Twitter
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                NSString* url = @"https://itunes.apple.com/us/app/dostavka-33/id571980030?ls=1&mt=8";
+                [tweetSheet setInitialText:@"I downloaded \"Доставка 33\" from AppStore and I like it! :)"];
+                [tweetSheet addURL:[NSURL URLWithString:url]];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry"
+                                                                    message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+            }
+
             
         }
         if (buttonIndex == 1)
         {
-            NSLog(@"Facebook");
-            [[NSUserDefaults standardUserDefaults] setValue:@"http://facebook.com" forKey:@"social"];
-            [self performSegueWithIdentifier:@"Social" sender:nil];
+            //Facebook
+            [self.navigationController setNavigationBarHidden:YES animated:NO];
+            
+            if (!self.facebookView)
+            {
+                self.facebookView = [[UIView alloc] initWithFrame:self.view.frame];
+                self.facebookView.backgroundColor = [UIColor whiteColor];
+            }
+            
+            
+            if (!self.loginview)
+            {
+                self.loginview = [[FBLoginView alloc] initWithReadPermissions:[NSArray arrayWithObject:@"status_update"]];
+                self.loginview.frame = CGRectOffset(self.loginview.frame, 5, 5);
+                self.loginview.delegate = self;
+                [self.loginview sizeToFit];
+                [self.facebookView addSubview:self.loginview];
+            }
+            
+            
+            if (!self.fbProfilePictureView)
+            {
+                self.fbProfilePictureView = [[FBProfilePictureView alloc] initWithFrame:CGRectMake(20, 70, 100, 100)];
+                [self.facebookView addSubview:self.fbProfilePictureView];
+            }
+            
+            
+            self.textView = [[UITextView alloc] initWithFrame:CGRectMake(127, 70, 173, 100)];
+            [self.facebookView addSubview:self.textView];
+            self.textView.text = @"I downloaded \"Доставка 33\" from AppStore and I like it! :) \n https://itunes.apple.com/us/app/dostavka-33/id571980030?ls=1&mt=8";
+            [self.textView setReturnKeyType:UIReturnKeyDone];
+            [self.textView setDelegate:self];
+            [self.textView.layer setBorderColor:[[UIColor colorWithRed:59.0f/255.0f green:89.0f/255.0f blue:182.0f/255.0f alpha:1.0f] CGColor]];
+            [self.textView.layer setBorderWidth:2];
+            [self.textView.layer setCornerRadius:2];
+            
+            UIButton *exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            exitButton.frame = CGRectMake(280, 0, 35, 35);
+            [exitButton setImage:[UIImage imageNamed:@"close_x.png"] forState:UIControlStateNormal];
+            [exitButton addTarget:self action:@selector(removeMySelf) forControlEvents:UIControlEventTouchUpInside];
+            [self.facebookView addSubview:exitButton];
+            
+            self.postOnWallButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            self.postOnWallButton.frame = CGRectMake(84, 307, 150, 37);
+            [self.postOnWallButton setTitle:@"Post on timeline" forState:UIControlStateNormal];
+            [self.postOnWallButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+            [self.postOnWallButton addTarget:self action:@selector(postOnWall) forControlEvents:UIControlEventTouchUpInside];
+            [self.facebookView addSubview:self.postOnWallButton];
+            
+            [self.view addSubview:self.facebookView];
         }
         
     }
@@ -397,7 +472,81 @@
     [self.tableView reloadData];
     
 }
+- (void) postOnWall
+{
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.indicator.frame = self.facebookView.frame;
+    [self.facebookView addSubview:self.indicator];
+    [self.indicator startAnimating];
+    
+    
+    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)
+    {
+        // No permissions found in session, ask for it
+        [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
+                                                   defaultAudience:FBSessionDefaultAudienceFriends
+                                                 completionHandler:^(FBSession *session, NSError *error)
+         {
+             // If permissions granted, publish the story
+             if (!error)[self postToFB:_textView.text];
+         }];
+    }
+    // If permissions present, publish the story
+    else [self postToFB:_textView.text];
+}
 
+- (void) postToFB:(NSString*)message
+{
+    [FBRequestConnection startForPostStatusUpdate:message
+                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                        
+                              NSString *alertText;
+                              if (error) {
+                                  alertText = [NSString stringWithFormat:
+                                               @"error: domain = %@, code = %d",
+                                               error.domain, error.code];
+                                  [_indicator stopAnimating];
+                                  [self.facebookView removeFromSuperview];
+                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
+                              } else {
+                                  alertText = [NSString stringWithFormat:@"Posted successfully"];
+                                  [_indicator stopAnimating];
+                                  [self.facebookView removeFromSuperview];
+                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
+                              }
+                              [[[UIAlertView alloc] initWithTitle:@"Result"
+                                                          message:alertText
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK!"
+                                                otherButtonTitles:nil] show];
+                          }];
+}
+
+- (void)removeMySelf
+{
+    [self.facebookView removeFromSuperview];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    if (self.indicator)
+        [self.indicator stopAnimating];
+}
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+{
+    NSLog(@"In");
+    self.postOnWallButton.enabled = YES;
+}
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+{
+    NSLog(@"Out");
+    self.postOnWallButton.enabled = NO;
+    self.fbProfilePictureView.profileID = nil;
+}
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
+                            user:(id<FBGraphUser>)user
+{
+    self.fbProfilePictureView.profileID = user.id;
+    self.loggedInUser = user;
+}
 
 #pragma mark - Segues
 

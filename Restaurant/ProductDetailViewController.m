@@ -190,11 +190,19 @@
     NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants_translation" withSortDescriptor:@"underbarid"]];
     
     NSString *memRestId;
+    int timeVar = 0;
     
     for (int i = 0; i < menuArray.count; i++)
     {
         if ([[[menuTranslArray objectAtIndex:i] valueForKey:@"idMenu"] isEqualToString:self.product.idMenu]) {
-            memRestId = [[menuArray objectAtIndex:i] valueForKey:@"idRestaurant"];
+            timeVar= [[[menuTranslArray objectAtIndex:i] valueForKey:@"underbarid"]intValue];
+        }
+    }
+    
+    for (int i = 0; i < menuArray.count; i++)
+    {
+        if ([[[menuTranslArray objectAtIndex:i] valueForKey:@"underbarid"]intValue] == timeVar) {
+            memRestId= [[menuArray objectAtIndex:i] valueForKey:@"idRestaurant"];
         }
     }
     
@@ -314,8 +322,6 @@ return _currentEmail;
         [self.postOnWallButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
         [self.postOnWallButton addTarget:self action:@selector(postOnWall) forControlEvents:UIControlEventTouchUpInside];
         [self.facebookView addSubview:self.postOnWallButton];
-
-        NSLog(@"Facebook");
 
         [self.view addSubview:self.facebookView];
     }

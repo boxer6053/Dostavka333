@@ -228,13 +228,16 @@ return _currentEmail;
                                   [self.facebookView removeFromSuperview];
                                   [self.navigationController setNavigationBarHidden:NO animated:NO];
                               } else {
-                                  alertText = [NSString stringWithFormat:
-                                               @"Posted successfully"];
-                                  
+                                  alertText = [NSString stringWithFormat:@"Posted successfully"];
                                   [_indicator stopAnimating];
                                   [self.facebookView removeFromSuperview];
                                   [self.navigationController setNavigationBarHidden:NO animated:NO];
                               }
+                              [[[UIAlertView alloc] initWithTitle:@"Result"
+                                                          message:alertText
+                                                         delegate:self
+                                                cancelButtonTitle:@"OK!"
+                                                otherButtonTitles:nil] show];
                           }];
 }
 
@@ -243,7 +246,6 @@ return _currentEmail;
     if (buttonIndex == 0)
     {
         [self findEmail];
-        NSLog(@"Twitter");
         if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
         {
             SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];

@@ -575,11 +575,37 @@
     else
         return;
     
+    UIImage *image = [[UIImage alloc] initWithData:data];
+    
+    // Let's save the file into Document folder.
+    
+    NSString *docDir;
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"docDir"])
+    {
+        docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        [[NSUserDefaults standardUserDefaults] setValue:docDir forKey:@"docDir"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    else
+        docDir = [[NSUserDefaults standardUserDefaults] objectForKey:@"docDir"];
+    
+    NSLog(@"%@",docDir);
+    
+	NSLog(@"saving png");
+	NSString *pngFilePath = [NSString stringWithFormat:@"%@/%@_pic.png", docDir, idPicture];
+	NSData *data1 = [NSData dataWithData:UIImagePNGRepresentation(image)];
+	[data1 writeToFile:pngFilePath atomically:YES];
+    
+    
     NSError *error;
     NSArray *debug= [self.managedObjectContext executeFetchRequest:request error:&error];
     NSManagedObject *objectToUpdate = [debug objectAtIndex:0];
-    if (objectToUpdate != nil)
-        [objectToUpdate setValue:data forKey:@"data"];
+    if (objectToUpdate != nil) {
+//        [objectToUpdate setValue:data forKey:@"data"];
+        [objectToUpdate setValue:pngFilePath forKey:@"filePath"];
+    }
     if (![self.managedObjectContext save:&error]) {
         //Handle any error with the saving of the context
     }
@@ -596,7 +622,10 @@
     if (debug.count != 0)
     {
         NSManagedObject *objectToGet = [debug objectAtIndex:0];
-        return [objectToGet valueForKey:@"data"];
+//        return [objectToGet valueForKey:@"data"];
+        NSData *imageData = [[NSData alloc] initWithContentsOfFile:[objectToGet valueForKey:@"filePath"]];
+        return imageData;
+
     }
     else
     {

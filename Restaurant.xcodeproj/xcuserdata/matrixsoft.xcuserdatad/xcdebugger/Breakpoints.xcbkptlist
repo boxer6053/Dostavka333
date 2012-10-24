@@ -38,7 +38,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "516"
-         endingLineNumber = "516">
+         endingLineNumber = "516"
+         landmarkName = "-fetchProductWithId:withCounts:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -49,7 +51,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "535"
-         endingLineNumber = "535">
+         endingLineNumber = "535"
+         landmarkName = "-fetchDiscountByIdDiscount:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -433,11 +437,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342698.45291"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "190"
-         endingLineNumber = "190"
+         startingLineNumber = "204"
+         endingLineNumber = "204"
          landmarkName = "-awakeFromNib"
          landmarkType = "5">
       </FileBreakpoint>
@@ -576,11 +580,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342698.45291"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "365"
-         endingLineNumber = "365"
+         startingLineNumber = "379"
+         endingLineNumber = "379"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -654,11 +658,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342698.45291"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "429"
-         endingLineNumber = "429"
+         startingLineNumber = "443"
+         endingLineNumber = "443"
          landmarkName = "-actionSheet:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -667,11 +671,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342698.45291"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "411"
-         endingLineNumber = "411"
+         startingLineNumber = "425"
+         endingLineNumber = "425"
          landmarkName = "-actionSheet:clickedButtonAtIndex:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -680,11 +684,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342237.247086"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
+         startingLineNumber = "168"
+         endingLineNumber = "168"
          landmarkName = "-awakeFromNib"
          landmarkType = "5">
       </FileBreakpoint>
@@ -732,11 +736,13 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/GettingCoreContent.m"
-         timestampString = "371473100.705761"
+         timestampString = "372702980.858213"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "942"
-         endingLineNumber = "942">
+         startingLineNumber = "971"
+         endingLineNumber = "971"
+         landmarkName = "-deleteAddressWithName:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -748,7 +754,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "462"
          endingLineNumber = "462"
-         landmarkName = "-infoOfProductInOrder:"
+         landmarkName = "-showOrHideInfoOfOrder:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -839,7 +845,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "507"
          endingLineNumber = "507"
-         landmarkName = "-reorderClick:"
+         landmarkName = "-infoOfProductInOrder:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -851,7 +857,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "717"
-         endingLineNumber = "717">
+         endingLineNumber = "717"
+         landmarkName = "-downloadingPic"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -962,11 +970,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Restaurant/LoadAppViewController.m"
-         timestampString = "372342227.440198"
+         timestampString = "372705422.520424"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "155"
-         endingLineNumber = "155"
+         startingLineNumber = "169"
+         endingLineNumber = "169"
          landmarkName = "-awakeFromNib"
          landmarkType = "5">
       </FileBreakpoint>
@@ -1124,6 +1132,84 @@
          startingLineNumber = "63"
          endingLineNumber = "63"
          landmarkName = "-getDictionaryDependOnDataStruct"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.m"
+         timestampString = "372687274.04221"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "541"
+         endingLineNumber = "541"
+         landmarkName = "-fetchStatusForOrder:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.m"
+         timestampString = "372696016.994399"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "568"
+         endingLineNumber = "568"
+         landmarkName = "-SavePictureToCoreData:toData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.m"
+         timestampString = "372696020.636718"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "605"
+         endingLineNumber = "605"
+         landmarkName = "-SavePictureToCoreData:toData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.h"
+         timestampString = "372698874.707729"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "43"
+         endingLineNumber = "43"
+         landmarkName = "-SaveProductToEntityName:WithId:withCount:withPrice:withPicture:withDiscountValue:withWeight:withProtein:withCarbs:withFats:withCalories:isFavorites:isHit:withIdMenu:"
+         landmarkType = "4">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.m"
+         timestampString = "372702980.858213"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "759"
+         endingLineNumber = "759"
+         landmarkName = "-SaveProductToEntityName:WithId:withCount:withPrice:withPicture:withDiscountValue:withWeight:withProtein:withCarbs:withFats:withCalories:isFavorites:isHit:withIdMenu:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Restaurant/GettingCoreContent.m"
+         timestampString = "372702706.976488"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "614"
+         endingLineNumber = "614"
+         landmarkName = "-fetchPictureDataByPictureId:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

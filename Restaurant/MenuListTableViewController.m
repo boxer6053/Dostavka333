@@ -184,23 +184,6 @@
 
 - (void)viewDidLoad
 {
-    
-    [super viewDidLoad];
-    self.imageDownloadsInProgress = [[NSMutableDictionary alloc] init];
-    self.navigationItem.title = self.kindOfMenu.title;
-    
-    hitView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HIT1.png"]];
-    newsItemView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"New1.png"]];
-    self.didLoad = YES;
-    NSLog(@"current pictures are %@", self.currentPictures);
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:YES];
-    
-    //fetching pictures
- //   NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
     ProductDataStruct *dataStruct;
     for (int i = 0; i < self.arrayData.count; i++)
     {
@@ -218,7 +201,42 @@
             [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
         }
     }
+
+    [super viewDidLoad];
+    self.imageDownloadsInProgress = [[NSMutableDictionary alloc] init];
+    self.navigationItem.title = self.kindOfMenu.title;
     
+    hitView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HIT1.png"]];
+    newsItemView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"New1.png"]];
+    self.didLoad = YES;
+    NSLog(@"current pictures are %@", self.currentPictures);
+    NSLog(@"ViewDidLoad");
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    
+    //fetching pictures
+ //   NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
+//    ProductDataStruct *dataStruct;
+//    for (int i = 0; i < self.arrayData.count; i++)
+//    {
+//        dataStruct = [self.arrayData objectAtIndex:i];
+//        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+//        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+//        urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSURL *url = [NSURL URLWithString:urlForImage];
+//        //        dataStruct.link = url.description;
+//        
+//        //saving results of secon request
+//        [[self.arrayData objectAtIndex:i] setLink:url.description];
+//        if(dataOfPicture)
+//        {
+//            [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
+//        }
+//    }
+        NSLog(@"ViewDidAppear");
     [self.tableView reloadData];
 }
 
@@ -244,6 +262,7 @@
         [cartButton addTarget:self action:@selector(toCartMenu:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:cartButton];
     }
+        NSLog(@"ViewWillAppear");
 }
 
 - (void) viewWillDisappear:(BOOL)animated {

@@ -38,9 +38,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "516"
-         endingLineNumber = "516"
-         landmarkName = "-fetchProductWithId:withCounts:"
-         landmarkType = "5">
+         endingLineNumber = "516">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -51,9 +49,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "535"
-         endingLineNumber = "535"
-         landmarkName = "-fetchDiscountByIdDiscount:"
-         landmarkType = "5">
+         endingLineNumber = "535">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -740,9 +736,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "942"
-         endingLineNumber = "942"
-         landmarkName = "-deleteAddressWithName:"
-         landmarkType = "5">
+         endingLineNumber = "942">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"

@@ -44,6 +44,7 @@
 @synthesize tapRecognizer;
 @synthesize restaurantId;
 @synthesize restaurantName;
+@synthesize testDelegate = _testDelegate;
 @synthesize db1 = _db1;
 @synthesize reservateButton = _reservateButton;
 @synthesize titleReservationTableBar = _titleReservationTableBar;
@@ -105,7 +106,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"djjsdfjsdjfjsdf %@", self.titleNumberOfPeople);
+    RestaurantAppDelegate *appDelegate = [[RestaurantAppDelegate alloc] init];
+    NSLog(@"djjsdfjsdjfjsdf %@", appDelegate.testToken);
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;
     mainGradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor darkGrayColor] CGColor],(id)[[UIColor blackColor] CGColor], nil];

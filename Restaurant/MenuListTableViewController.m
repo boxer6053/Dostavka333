@@ -193,6 +193,8 @@
     newsItemView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"New1.png"]];
     self.didLoad = YES;
     NSLog(@"current pictures are %@", self.currentPictures);
+    
+    NSLog(@"viewDidLoad");
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -201,25 +203,29 @@
     
     //fetching pictures
  //   NSDictionary *pictures = [self.db fetchImageURLAndDatabyMenuID:self.kindOfMenu.menuId];
-    ProductDataStruct *dataStruct;
-    for (int i = 0; i < self.arrayData.count; i++)
-    {
-        dataStruct = [self.arrayData objectAtIndex:i];
-        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
-        urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSURL *url = [NSURL URLWithString:urlForImage];
-        //        dataStruct.link = url.description;
-        
-        //saving results of secon request
-        [[self.arrayData objectAtIndex:i] setLink:url.description];
-        if(dataOfPicture)
-        {
-            [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
-        }
-    }
+//    ProductDataStruct *dataStruct;
+//    for (int i = 0; i < self.arrayData.count; i++)
+//    {
+//        dataStruct = [self.arrayData objectAtIndex:i];
+////        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+//        
+//        NSData *dataOfPicture = [[NSData alloc] initWithContentsOfFile:[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"filePath"]];
+//        
+//        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+//        urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//        NSURL *url = [NSURL URLWithString:urlForImage];
+//        //        dataStruct.link = url.description;
+//        
+//        //saving results of secon request
+//        [[self.arrayData objectAtIndex:i] setLink:url.description];
+//        if(dataOfPicture)
+//        {
+//            [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
+//        }
+//    }
+//    
+//    [self.tableView reloadData];
     
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -244,6 +250,30 @@
         [cartButton addTarget:self action:@selector(toCartMenu:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:cartButton];
     }
+    
+    ProductDataStruct *dataStruct;
+    for (int i = 0; i < self.arrayData.count; i++)
+    {
+        dataStruct = [self.arrayData objectAtIndex:i];
+        //        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+        
+        NSData *dataOfPicture = [[NSData alloc] initWithContentsOfFile:[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"filePath"]];
+        
+        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+        urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlForImage];
+        //        dataStruct.link = url.description;
+        
+        //saving results of secon request
+        [[self.arrayData objectAtIndex:i] setLink:url.description];
+        if(dataOfPicture)
+        {
+            [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
+        }
+    }
+    
+    [self.tableView reloadData];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -257,6 +287,7 @@
     self.didLoad = NO;
 //    }
     [super viewWillDisappear:animated];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -275,6 +306,7 @@
     [self setNewsItemView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -281,6 +281,30 @@
         [cartButton addTarget:self action:@selector(toCartMenu:) forControlEvents:UIControlEventTouchUpInside];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cartButton];
     }
+    
+    ProductDataStruct *dataStruct;
+    for (int i = 0; i < self.arrayData.count; i++)
+    {
+        dataStruct = [self.arrayData objectAtIndex:i];
+        //        NSData *dataOfPicture = [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"data"];
+        
+        NSData *dataOfPicture = [[NSData alloc] initWithContentsOfFile:[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"filePath"]];
+        
+        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+        urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSURL *url = [NSURL URLWithString:urlForImage];
+        //        dataStruct.link = url.description;
+        
+        //saving results of secon request
+        [[self.arrayData objectAtIndex:i] setLink:url.description];
+        if(dataOfPicture)
+        {
+            [[self.arrayData objectAtIndex:i] setImage:[UIImage imageWithData:dataOfPicture]];
+        }
+    }
+    
+    [self.gmGridView reloadData];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated

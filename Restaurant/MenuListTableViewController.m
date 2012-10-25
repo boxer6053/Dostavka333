@@ -276,6 +276,7 @@
     self.didLoad = NO;
 //    }
     [super viewWillDisappear:animated];
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -294,6 +295,7 @@
     [self setNewsItemView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

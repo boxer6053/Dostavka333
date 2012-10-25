@@ -185,35 +185,17 @@
 
 -(NSString* )findEmail
 {
-    NSArray *menuTranslArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus_translation" withSortDescriptor:@"underbarid"]];
-    NSArray *menuArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Menus" withSortDescriptor:@"underbarid"]];
     NSArray *restaurantArray = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Restaurants_translation" withSortDescriptor:@"underbarid"]];
-    
-    NSString *memRestId;
-    int timeVar = 0;
-    
-    for (int i = 0; i < menuArray.count; i++)
-    {
-        if ([[[menuTranslArray objectAtIndex:i] valueForKey:@"idMenu"] isEqualToString:self.product.idMenu]) {
-            timeVar= [[[menuTranslArray objectAtIndex:i] valueForKey:@"underbarid"]intValue];
-        }
-    }
-    
-    for (int i = 0; i < menuArray.count; i++)
-    {
-        if ([[[menuTranslArray objectAtIndex:i] valueForKey:@"underbarid"]intValue] == timeVar) {
-            memRestId= [[menuArray objectAtIndex:i] valueForKey:@"idRestaurant"];
-        }
-    }
-    
+        
     for (int i = 0; i < restaurantArray.count; i++)
     {
-        if ([[[restaurantArray objectAtIndex:i] valueForKey:@"idRestaurant"] isEqualToString:memRestId]) {
+        if ([[[restaurantArray objectAtIndex:i] valueForKey:@"idRestaurant"] isEqualToString:[self.content fetchIdRestaurantFromIdMenu:self.product.idMenu]]) {
             _currentEmail = [[restaurantArray objectAtIndex:i] valueForKey:@"metro"];
+            break;
         }
     }
     
-return _currentEmail;
+    return _currentEmail;
 }
 
 - (void) postToFB:(UIImage*)image:(NSString*)message
@@ -462,14 +444,6 @@ return _currentEmail;
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-    // here we use helper properties of FBGraphUser to dot-through to first_name and
-    // id properties of the json response from the server; alternatively we could use
-    // NSDictionary methods such as objectForKey to get values from the my json object
-//    self.labelFirstName.text = [NSString stringWithFormat:@"Hello %@!", user.first_name];
-    // setting the profileID property of the FBProfilePictureView instance
-    // causes the control to fetch and display the profile picture for the user
-    
-    
     self.fbProfilePictureView.profileID = user.id;
     self.loggedInUser = user;
 }

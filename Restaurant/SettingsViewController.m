@@ -324,7 +324,7 @@
             MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
             if([MFMessageComposeViewController canSendText])
             {
-                controller.body = @"AppStore link and something else :)";
+                controller.body = @"I downloaded \"Доставка 33\" from AppStore and I like it! :) \n https://itunes.apple.com/us/app/dostavka-33/id571980030?ls=1&mt=8";
                 controller.recipients = [NSArray arrayWithObjects:/*phone numbers*/nil];
                 controller.messageComposeDelegate = (id)self;
                 [self presentModalViewController:controller animated:YES];
@@ -545,7 +545,7 @@
                             user:(id<FBGraphUser>)user
 {
     self.fbProfilePictureView.profileID = user.id;
-    self.loggedInUser = user;
+    self.loggedInUser = user; 
 }
 
 #pragma mark - Segues
@@ -689,7 +689,7 @@
 	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
 	picker.mailComposeDelegate = (id)self;
 	
-	[picker setSubject:@"Restaurant"];
+	[picker setSubject:@"Доставка 33"];
 	
     
 	// Set up recipients
@@ -707,7 +707,7 @@
 	//[picker addAttachmentData:myData mimeType:@"image/png" fileName:@"rainy"];
 	
 	// Fill out the email body text
-	NSString *emailBody = @"Here is Appstore link to download application or something else =)";
+	NSString *emailBody = @"I downloaded \"Доставка 33\" from AppStore and I like it! :) \n https://itunes.apple.com/us/app/dostavka-33/id571980030?ls=1&mt=8";
 	[picker setMessageBody:emailBody isHTML:NO];
 	
 	[self presentModalViewController:picker animated:YES];

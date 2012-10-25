@@ -95,6 +95,8 @@
 @synthesize content = _content;
 @synthesize currentEmail = _currentEmail;
 @synthesize postImage = _postImage;
+NSString *const FBSessionStateChangedNotification =
+@"com.matrixsoftware:FBSessionStateChangedNotification";
 
 //titles
 @synthesize titleWihtDiscounts = _titleWihtDiscounts;
@@ -444,14 +446,6 @@
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
                             user:(id<FBGraphUser>)user {
-    // here we use helper properties of FBGraphUser to dot-through to first_name and
-    // id properties of the json response from the server; alternatively we could use
-    // NSDictionary methods such as objectForKey to get values from the my json object
-//    self.labelFirstName.text = [NSString stringWithFormat:@"Hello %@!", user.first_name];
-    // setting the profileID property of the FBProfilePictureView instance
-    // causes the control to fetch and display the profile picture for the user
-    
-    
     self.fbProfilePictureView.profileID = user.id;
     self.loggedInUser = user;
 }

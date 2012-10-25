@@ -95,8 +95,6 @@
 @synthesize content = _content;
 @synthesize currentEmail = _currentEmail;
 @synthesize postImage = _postImage;
-NSString *const FBSessionStateChangedNotification =
-@"com.matrixsoftware:FBSessionStateChangedNotification";
 
 //titles
 @synthesize titleWihtDiscounts = _titleWihtDiscounts;

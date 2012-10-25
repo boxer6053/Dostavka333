@@ -14,6 +14,8 @@
 
 @interface ProductDetailViewController : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UIAlertViewDelegate>
 
+extern NSString *const FBSessionStateChangedNotification;
+
 @property (strong, nonatomic) ProductDataStruct *product;
 @property (strong, nonatomic) GettingCoreContent *db;
 @property (strong, nonatomic) NSNumber *count;

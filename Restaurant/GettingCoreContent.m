@@ -602,8 +602,10 @@
     NSError *error;
     NSArray *debug= [self.managedObjectContext executeFetchRequest:request error:&error];
     NSManagedObject *objectToUpdate = [debug objectAtIndex:0];
-    if (objectToUpdate != nil)
-      [objectToUpdate setValue:data forKey:@"data"];
+    if (objectToUpdate != nil) {
+//        [objectToUpdate setValue:data forKey:@"data"];
+        [objectToUpdate setValue:pngFilePath forKey:@"filePath"];
+    }
     if (![self.managedObjectContext save:&error]) {
         //Handle any error with the saving of the context
     }

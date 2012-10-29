@@ -303,7 +303,7 @@
             //NSLog(@"objects are - %@", array);
             NSLog(@"currentRest -%@", restaurantName);
             
-            NSMutableString *reserve = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/reserv.php?tag=reserv&DBid=3&UUID="];
+            NSMutableString *reserve = [NSMutableString stringWithString: @"http://matrix-soft.org/addon_domains_folder/test8/root/Customer_Scripts/reserv.php?tag=reserv&DBid=13&UUID="];
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
             {
                 NSString *uid = [self createUUID];

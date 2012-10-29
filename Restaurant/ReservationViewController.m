@@ -107,7 +107,7 @@
 {
     [super viewDidLoad];
     RestaurantAppDelegate *appDelegate = [[RestaurantAppDelegate alloc] init];
-    NSLog(@"djjsdfjsdjfjsdf %@", appDelegate.testToken);
+    NSLog(@"djjsdfjsdjfjsdf %@", appDelegate.local);
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;
     mainGradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor darkGrayColor] CGColor],(id)[[UIColor blackColor] CGColor], nil];
@@ -147,6 +147,8 @@
     //    self.pickerViewContainer.okButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStylePlain target:self action:@selector(okButton)];
     
     //    [self.view addSubview:self.pickerViewContainer];
+    NSString *uid = [self createUUID];
+    NSLog(@"UUID is %@", uid);
     NSLog(@"test string is %@", self.testString);
     
 }

@@ -17,6 +17,8 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
+@synthesize testToken = _testToken;
+
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
@@ -24,6 +26,8 @@
     // attempt to extract a token from the url
     return [FBSession.activeSession handleOpenURL:url];
 }
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -39,6 +43,16 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"My token is: %@", deviceToken);
+    self.testToken = deviceToken;
+   
+}
+
+-(NSString *)local
+{
+    // NSString *local = self.testToken;
+    NSString* local = [[NSString alloc] initWithData:self.testToken
+                                            encoding:NSUTF8StringEncoding];
+    return local;
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error

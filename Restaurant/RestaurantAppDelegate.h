@@ -15,7 +15,8 @@
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic) NSString *testToken;
+@property (strong, nonatomic) NSData *testToken;
+@property (strong, nonatomic) NSString *local;
 @property (strong, nonatomic) NSString *testDeviceToken;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;

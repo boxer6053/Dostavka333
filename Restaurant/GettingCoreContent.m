@@ -661,7 +661,7 @@
     NSArray *resultOfARequest = [moc executeFetchRequest:request error:&error];
     if (resultOfARequest.count != 0)
     {
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/addon_domains_folder/test8/root/%@",[[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
+        NSString *urlForImage = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], [[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [[NSURL alloc] initWithString:urlForImage];
         return url;
@@ -687,7 +687,7 @@
     NSArray *resultOfARequest = [moc executeFetchRequest:request error:&error];
     //    if (resultOfARequest.count != 0)
     {
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/addon_domains_folder/test8/root/%@",[[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
+        NSString *urlForImage = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], [[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        NSURL *url = [[NSURL alloc] initWithString:urlForImage];
         return urlForImage;

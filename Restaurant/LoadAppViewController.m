@@ -104,10 +104,17 @@
     {
         if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"])
         {
+            
+            NSString *dbLink = @"http://matrix-soft.org/addon_domains_folder/test8/root";
+            [[NSUserDefaults standardUserDefaults] setValue:dbLink forKey:@"dbLink"];
+            
+            NSString *DBid = @"DBid=13";
+            [[NSUserDefaults standardUserDefaults] setValue:DBid forKey:@"DBid"];
+            
             //tag=init http request
             NSLog(@"<<<<<<<<<Generating init request>>>>>>>>>>");
             self.isFirstTime = YES;
-            NSMutableString *order = [NSMutableString stringWithString: @"http://matrix-soft.org/addon_domains_folder/test8/root/Customer_Scripts/update.php?DBid=13&tag=init&idPhone=1"];
+            NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=init&idPhone=1"];
             
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
             {
@@ -164,7 +171,7 @@
             NSNumber *maxInterafaceId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Titles"];
             NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
             
-            NSMutableString *myString = [NSMutableString stringWithString: @"http://matrix-soft.org/addon_domains_folder/test8/root/Customer_Scripts/update.php?DBid=13&tag=params&idPhone=1"];
+            NSMutableString *myString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=params&idPhone=1"];
             
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
             {
@@ -338,7 +345,7 @@
         NSNumber *maxPromotionsId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Promotions"];
         NSNumber *maxPromotionsVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Promotions"];
         
-        NSMutableString *myString = [NSMutableString stringWithString: @"http://matrix-soft.org/addon_domains_folder/test8/root/Customer_Scripts/update.php?DBid=13&tag=update"];
+        NSMutableString *myString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=update"];
         
         [myString appendFormat:@"&city_id=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
         [myString appendFormat:@"&lang_id=%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
@@ -442,7 +449,7 @@
         //створюємо http зарпос
         if (checkConnection.hasConnectivity)
         {
-            NSMutableString *order = [NSMutableString stringWithString: @"http://matrix-soft.org/addon_domains_folder/test8/root/Customer_Scripts/update.php?DBid=13&tag=rmp"];
+            NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=rmp"];
             [order appendFormat:@"&idLang=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
             [order appendFormat:@"&idCity=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
             NSURL *url = [NSURL URLWithString:order.copy];

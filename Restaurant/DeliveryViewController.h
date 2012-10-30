@@ -14,6 +14,7 @@
 #import "Singleton.h"
 #import "SSToolkit/SSToolkit.h"
 #import <QuartzCore/QuartzCore.h>
+#import "RestaurantAppDelegate.h"
 
 @interface DeliveryViewController : UIViewController <UITextFieldDelegate, NSURLConnectionDelegate, AddressListDelegate, UIScrollViewDelegate>
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;

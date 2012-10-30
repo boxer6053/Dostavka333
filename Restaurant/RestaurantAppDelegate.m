@@ -17,7 +17,7 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
-@synthesize testToken = _testToken;
+@synthesize testToken1 = _testToken11;
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
@@ -43,17 +43,27 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
 	NSLog(@"My token is: %@", deviceToken);
-    self.testToken = deviceToken;
-   
+    
+    self.testToken1 = [[[deviceToken description]
+                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
+                       stringByReplacingOccurrencesOfString:@" "
+                       withString:@""];
+    NSLog(@"newToken %@", self.testToken1);
 }
 
--(NSString *)local
-{
-    // NSString *local = self.testToken;
-    NSString* local = [[NSString alloc] initWithData:self.testToken
-                                            encoding:NSUTF8StringEncoding];
-    return local;
-}
+
+//-(NSString *)local
+//{
+//    // NSString *local = self.testToken;
+//    NSString* local = [[NSString alloc] initWithData:self.testToken
+//                                            encoding:NSUTF8StringEncoding];
+//    return local;
+//}
+
+//-(NSData *)testToken
+//{
+//    return 
+//}
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {

@@ -103,11 +103,24 @@
     return self;
 }
 
+//NOTA BENE GET DEVICE TOKEN /////////////////////////////////////////////
++(NSString *) getDeviceToken
+{
+    NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+    
+    NSLog(@" getDeviceToken = %@",deviceToken);  // This prints NULL
+    
+    return deviceToken;
+    
+}
+//////////////////////////////////////////////////////////////////////////
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    RestaurantAppDelegate *appDelegate = [[RestaurantAppDelegate alloc] init];
-    NSLog(@"djjsdfjsdjfjsdf %@", appDelegate.local);
+  // RestaurantAppDelegate *appDelegate = [[RestaurantAppDelegate alloc] init];
+
+//    NSString*  deviceName= [[UIDevice currentDevice] uniqueIdentifier];
+    NSLog(@"djjsdfjsdjfjsdf %@", [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1] );
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;
     mainGradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor darkGrayColor] CGColor],(id)[[UIColor blackColor] CGColor], nil];
@@ -149,7 +162,7 @@
     //    [self.view addSubview:self.pickerViewContainer];
     NSString *uid = [self createUUID];
     NSLog(@"UUID is %@", uid);
-    NSLog(@"test string is %@", self.testString);
+    //NSLog(@"test string is %@", self.testString);
     
 }
 

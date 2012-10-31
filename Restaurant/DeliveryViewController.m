@@ -467,14 +467,12 @@
                 {
                     NSString *uid = [self createUUID];
                     [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                   // [[NSUserDefaults standardUserDefaults] setValue:uid1 forKey:@"uid1"];
-
                     //9E3C884C-6E57-4D16-884F-46132825F21E
-//                    [[NSUserDefaults standardUserDefaults] synchronize];
-//                    [order appendString: uid];
-//                }
-//                else
-                    [order appendString:uid];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [order appendString: uid];
+                }
+                else
+                    [order appendString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uid"]];
                 
                 NSArray *cartArray = [[[GettingCoreContent alloc] init] fetchAllProductsIdAndTheirCountWithPriceForEntity:@"Cart"];
                 NSMutableString *ids = [[NSMutableString alloc] init];
@@ -822,27 +820,27 @@
 #pragma mark
 #pragma mark PRIVATE METHODS
 
-//- (NSString *)createUUID
-//{
-//    // Create universally unique identifier (object)
-//    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-//    
-//    // Get the string representation of CFUUID object.
-//    NSString *uuidStr = (__bridge NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
-//    
-//    // If needed, here is how to get a representation in bytes, returned as a structure
-//    // typedef struct {
-//    //   UInt8 byte0;
-//    //   UInt8 byte1;
-//    //   ...
-//    //   UInt8 byte15;
-//    // } CFUUIDBytes;
-//    //CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
-//    
-//    //CFRelease(uuidObject);
-//    
-//    return uuidStr;
-//}
+- (NSString *)createUUID
+{
+    // Create universally unique identifier (object)
+    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+    
+    // Get the string representation of CFUUID object.
+    NSString *uuidStr = (__bridge NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
+    
+    // If needed, here is how to get a representation in bytes, returned as a structure
+    // typedef struct {
+    //   UInt8 byte0;
+    //   UInt8 byte1;
+    //   ...
+    //   UInt8 byte15;
+    // } CFUUIDBytes;
+    //CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
+    
+    //CFRelease(uuidObject);
+    
+    return uuidStr;
+}
 
 -(void)setAllTitlesOnThisPage
 {

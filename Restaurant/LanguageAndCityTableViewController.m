@@ -204,7 +204,7 @@
                 [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
                 
                 // http request updatePHP with &tag=rmp
-                NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=rmp"];
+                NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=rmp"];
                 [urlString appendFormat:@"&idLang=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                 [urlString appendFormat:@"&idCity=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                 NSURL *url = [NSURL URLWithString:urlString.copy];
@@ -265,7 +265,7 @@
                     
                     if (checkConnection.hasConnectivity) {
                         // http request updatePHP with &tag=rmp
-                        NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update"];
+                        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=update"];
                         [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                         [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                         
@@ -349,7 +349,7 @@
                         [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
                         
                         // http request updatePHP with &tag=rmp
-                        NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update_t"];
+                        NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=update_t"];
                         [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                         [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                         
@@ -465,7 +465,7 @@
                 
                 if (checkConnection.hasConnectivity) {
                     // http request updatePHP with &tag=update
-                    NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update"];
+                    NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=update"];
                     [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                     [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                     
@@ -550,7 +550,7 @@
                     [[NSUserDefaults standardUserDefaults] setObject:data forKey:wasDownloaded];
                     
                     // http request updatePHP with &tag=rmp
-                    NSMutableString *urlString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/update.php?DBid=3&tag=update_t"];
+                    NSMutableString *urlString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=update_t"];
                     [urlString appendFormat:@"&lang_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
                     [urlString appendFormat:@"&city_id=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultCityId"]];
                     

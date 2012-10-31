@@ -11,9 +11,40 @@
 NSString *const FBSessionStateChangedNotification =
 @"com.matrixsoftware.Restaurant:FBSessionStateChangedNotification";
 
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     return YES;
+}
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"My token is: %@", deviceToken);
+    
+    self.testToken1 = [[[deviceToken description]
+                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
+                       stringByReplacingOccurrencesOfString:@" "
+                       withString:@""];
+    NSLog(@"newToken %@", self.testToken1);
+}
+
+
+//-(NSString *)local
+//{
+//    // NSString *local = self.testToken;
+//    NSString* local = [[NSString alloc] initWithData:self.testToken
+//                                            encoding:NSUTF8StringEncoding];
+//    return local;
+//}
+
+//-(NSData *)testToken
+//{
+//    return 
+//}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -105,6 +136,7 @@ NSString *const FBSessionStateChangedNotification =
 {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+ 
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
             NSLog(@"Unresolved error %@, %@", error, [error userInfo]);

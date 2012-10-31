@@ -44,6 +44,7 @@
 @synthesize tapRecognizer;
 @synthesize restaurantId;
 @synthesize restaurantName;
+@synthesize testDelegate = _testDelegate;
 @synthesize db1 = _db1;
 @synthesize reservateButton = _reservateButton;
 @synthesize titleReservationTableBar = _titleReservationTableBar;
@@ -102,10 +103,24 @@
     return self;
 }
 
+//NOTA BENE GET DEVICE TOKEN /////////////////////////////////////////////
++(NSString *) getDeviceToken
+{
+    NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+    
+    NSLog(@" getDeviceToken = %@",deviceToken);  // This prints NULL
+    
+    return deviceToken;
+    
+}
+//////////////////////////////////////////////////////////////////////////
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"djjsdfjsdjfjsdf %@", self.titleNumberOfPeople);
+  // RestaurantAppDelegate *appDelegate = [[RestaurantAppDelegate alloc] init];
+
+//    NSString*  deviceName= [[UIDevice currentDevice] uniqueIdentifier];
+    NSLog(@"djjsdfjsdjfjsdf %@", [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1] );
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;
     mainGradient.colors = [NSArray arrayWithObjects:(id)[[UIColor blackColor] CGColor], (id)[[UIColor darkGrayColor] CGColor],(id)[[UIColor blackColor] CGColor], nil];
@@ -145,7 +160,9 @@
     //    self.pickerViewContainer.okButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonItemStylePlain target:self action:@selector(okButton)];
     
     //    [self.view addSubview:self.pickerViewContainer];
-    NSLog(@"test string is %@", self.testString);
+    NSString *uid = [self createUUID];
+    NSLog(@"UUID is %@", uid);
+    //NSLog(@"test string is %@", self.testString);
     
 }
 
@@ -303,7 +320,7 @@
             //NSLog(@"objects are - %@", array);
             NSLog(@"currentRest -%@", restaurantName);
             
-            NSMutableString *reserve = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/reserv.php?tag=reserv&DBid=3&UUID="];
+            NSMutableString *reserve = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/reserv.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=reserv&UUID="];
             if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
             {
                 NSString *uid = [self createUUID];

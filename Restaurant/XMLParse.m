@@ -136,7 +136,7 @@
         NSLog(@"Link is %@", string);
         NSString *utf8String = [string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        NSString *fullURLString = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",utf8String];
+        NSString *fullURLString = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], utf8String];
         
         //add logoURL
         [[NSUserDefaults standardUserDefaults] setValue:fullURLString forKey:@"logoURL"];

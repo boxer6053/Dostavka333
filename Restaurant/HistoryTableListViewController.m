@@ -94,7 +94,7 @@
     
     
     if ([checkConnection hasConnectivity]) {
-        NSMutableString *statusRequesString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/getStatuses.php?DBid=3&UUID="];
+        NSMutableString *statusRequesString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/getStatuses.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&UUID="];
         if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
         {
             NSString *uid = [self createUUID];

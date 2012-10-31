@@ -59,7 +59,7 @@
     [self setAllTitlesOnThisPage];
 	// Do any additional setup after loading the view.
     
-    NSMutableString *statusRequesString = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/getStatusesReservations.php?DBid=3&UUID="];
+    NSMutableString *statusRequesString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/getStatusesReservations.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&UUID="];
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
     {
         NSString *uid = [self createUUID];

@@ -13,6 +13,7 @@
 @interface GettingCoreContent()
 
 @property(nonatomic,strong) NSFetchedResultsController *fetchedResultsController;
+@property BOOL isExceptionThrow;
 
 @end
 
@@ -21,6 +22,7 @@
 @synthesize arrayOfCoreData = _arrayOfCoreData;
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize fetchedResultsController = _fetchedResultsController;
+@synthesize isExceptionThrow = _isExceptionThrow;
 
 -(NSManagedObjectContext *)managedObjectContext
 {
@@ -102,111 +104,121 @@
     NSManagedObjectContext * context = self.managedObjectContext;
     NSArray *items= [self fetchAllIdsFromEntity:entityName];
     
-    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
-    NSArray *keys = [attributeDictionary allKeys];
-    int counter = 0;
-    NSString *editAttrinbuteWithUnderBar = [[NSString alloc] init];
-    if(attributeDictionary.count)
-    {
-        NSArray *ArrayOfEnteringIDs = [attributeDictionary objectForKey:@"_id"]; 
-        if ([entityName isEqualToString:@"Products"])
+    if (![self isExceptionThrow]) {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
+        NSArray *keys = [attributeDictionary allKeys];
+        int counter = 0;
+        NSString *editAttrinbuteWithUnderBar = [[NSString alloc] init];
+        if(attributeDictionary.count)
         {
-            NSArray *favoritesArray = [self fetchFavoritesFromEntityName:@"Products"];
-            NSArray *arrayOfCartsIds = [self fetchAllIdsFromEntity:@"Cart"];
-            //            NSArray *arrayOfFavoritesIds = [self fetchAllIdsFromEntity:@"Favorites"];
-            
-            for (int i = 0; i < arrayOfCartsIds.count; i++)
-                for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
-                    if ([[arrayOfCartsIds objectAtIndex:i] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
-                    {
-                        [self deleteObjectFromEntity:@"Cart" withProductId:[arrayOfCartsIds objectAtIndex:i]];
-                    }
-            
-            for (int i = 0; i < favoritesArray.count; i++)
-                for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
-                    if ([[[favoritesArray objectAtIndex:i] valueForKey:@"underbarid"] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
-                    {
-                        return;
-                    }
-            
-        }
-        
-        for (int i = 0; i < items.count; i++)
-        {
-            for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
-                if ([[items objectAtIndex:i] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
-                {
-                    [self deleteObjectFromEntity:entityName withProductId:[items objectAtIndex:i]];
-                    break;
-                }
-        }
-        
-        NSArray *values = [attributeDictionary objectForKey:[keys objectAtIndex:0]];
-        while(counter <  values.count)
-        {
-            NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-            for(int i=0;i<keys.count;i++)
+            NSArray *ArrayOfEnteringIDs = [attributeDictionary objectForKey:@"_id"];
+            if ([entityName isEqualToString:@"Products"])
             {
-                id objectAtIndexI = [keys objectAtIndex:i];
-                values = [attributeDictionary objectForKey:objectAtIndexI];
-                editAttrinbuteWithUnderBar = objectAtIndexI;
+                NSArray *favoritesArray = [self fetchFavoritesFromEntityName:@"Products"];
+                NSArray *arrayOfCartsIds = [self fetchAllIdsFromEntity:@"Cart"];
+                //            NSArray *arrayOfFavoritesIds = [self fetchAllIdsFromEntity:@"Favorites"];
                 
-                NSString *subString = [editAttrinbuteWithUnderBar substringToIndex:1];
-                //[editAttrinbuteWithUnderBar characterAtIndex:0];
-                if([editAttrinbuteWithUnderBar characterAtIndex:0] == '_')
-                {
-                    editAttrinbuteWithUnderBar = [NSString stringWithFormat:@"%@%@", @"underbar", [editAttrinbuteWithUnderBar substringFromIndex:1]];
-                }
+                for (int i = 0; i < arrayOfCartsIds.count; i++)
+                    for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
+                        if ([[arrayOfCartsIds objectAtIndex:i] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
+                        {
+                            [self deleteObjectFromEntity:@"Cart" withProductId:[arrayOfCartsIds objectAtIndex:i]];
+                        }
                 
-                else if ([subString uppercaseString])
-                {
-                    editAttrinbuteWithUnderBar = [NSString stringWithFormat:@"%@%@", [subString lowercaseString], [editAttrinbuteWithUnderBar substringFromIndex:1]];
-                    if ([editAttrinbuteWithUnderBar isEqualToString:@"description"])
-                    {
-                        editAttrinbuteWithUnderBar = @"descriptionAbout";
-                    }
-                }
-                if ([editAttrinbuteWithUnderBar isEqualToString:@"idPicture"] || [editAttrinbuteWithUnderBar isEqualToString:@"underbarid"] || [editAttrinbuteWithUnderBar isEqualToString:@"idProduct"] || [editAttrinbuteWithUnderBar isEqualToString:@"version"] || [editAttrinbuteWithUnderBar isEqualToString:@"isOrder"] || [editAttrinbuteWithUnderBar isEqualToString:@"terrace"] || [editAttrinbuteWithUnderBar isEqualToString:@"parking"] || [editAttrinbuteWithUnderBar isEqualToString:@"seatsNumber"] || [editAttrinbuteWithUnderBar isEqualToString:@"hit"] ||
-                    [editAttrinbuteWithUnderBar isEqualToString:@"carbs"] || [editAttrinbuteWithUnderBar isEqualToString:@"calories"] || [editAttrinbuteWithUnderBar isEqualToString:@"weight"] ||[editAttrinbuteWithUnderBar isEqualToString:@"protein"] || [editAttrinbuteWithUnderBar isEqualToString:@"fats"]) 
-                {
-                    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-                    [f setNumberStyle:NSNumberFormatterDecimalStyle];
-                    NSNumber * idPicture = [f numberFromString:[values objectAtIndex:counter]];
-                    [newManagedObject setValue:idPicture forKey:editAttrinbuteWithUnderBar];
-                }
-                else 
-                    if ([editAttrinbuteWithUnderBar isEqualToString:@"action"])
-                    {
-                        if([[[attributeDictionary objectForKey:@"action"] objectAtIndex:counter] isEqual:@"2"])
+                for (int i = 0; i < favoritesArray.count; i++)
+                    for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
+                        if ([[[favoritesArray objectAtIndex:i] valueForKey:@"underbarid"] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
                         {
-                            [self deleteObjectFromEntity:entityName withProductId:[ArrayOfEnteringIDs objectAtIndex:counter]];
-                            break;
+                            return;
                         }
-                        else 
-                        {
-                            NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
-                            [f setNumberStyle:NSNumberFormatterDecimalStyle];
-                            NSNumber *numberValue = [f numberFromString:[values objectAtIndex:counter]];
-                            [newManagedObject setValue:numberValue forKey:editAttrinbuteWithUnderBar];
-                        }
-                    }
-                    else 
+                
+            }
+            
+            for (int i = 0; i < items.count; i++)
+            {
+                for (int j = 0; j < ArrayOfEnteringIDs.count; j++)
+                    if ([[items objectAtIndex:i] intValue] == [[[attributeDictionary objectForKey:@"_id"] objectAtIndex:j] intValue])
                     {
-                        [newManagedObject setValue:[[values objectAtIndex:counter] description] forKey:editAttrinbuteWithUnderBar];
+                        [self deleteObjectFromEntity:entityName withProductId:[items objectAtIndex:i]];
+                        break;
                     }
             }
-            counter++;
-        }
-        // Save the context.
-        //NSError *error = nil;
-        NSError *error;
-        if (![context save:&error])
-        {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            
+            NSArray *values = [attributeDictionary objectForKey:[keys objectAtIndex:0]];
+            while(counter <  values.count)
+            {
+                NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+                for(int i=0;i<keys.count;i++)
+                {
+                    id objectAtIndexI = [keys objectAtIndex:i];
+                    values = [attributeDictionary objectForKey:objectAtIndexI];
+                    editAttrinbuteWithUnderBar = objectAtIndexI;
+                    
+                    NSString *subString = [editAttrinbuteWithUnderBar substringToIndex:1];
+                    //[editAttrinbuteWithUnderBar characterAtIndex:0];
+                    if([editAttrinbuteWithUnderBar characterAtIndex:0] == '_')
+                    {
+                        editAttrinbuteWithUnderBar = [NSString stringWithFormat:@"%@%@", @"underbar", [editAttrinbuteWithUnderBar substringFromIndex:1]];
+                    }
+                    
+                    else if ([subString uppercaseString])
+                    {
+                        editAttrinbuteWithUnderBar = [NSString stringWithFormat:@"%@%@", [subString lowercaseString], [editAttrinbuteWithUnderBar substringFromIndex:1]];
+                        if ([editAttrinbuteWithUnderBar isEqualToString:@"description"])
+                        {
+                            editAttrinbuteWithUnderBar = @"descriptionAbout";
+                        }
+                    }
+                    if ([editAttrinbuteWithUnderBar isEqualToString:@"idPicture"] || [editAttrinbuteWithUnderBar isEqualToString:@"underbarid"] || [editAttrinbuteWithUnderBar isEqualToString:@"idProduct"] || [editAttrinbuteWithUnderBar isEqualToString:@"version"] || [editAttrinbuteWithUnderBar isEqualToString:@"isOrder"] || [editAttrinbuteWithUnderBar isEqualToString:@"terrace"] || [editAttrinbuteWithUnderBar isEqualToString:@"parking"] || [editAttrinbuteWithUnderBar isEqualToString:@"seatsNumber"] || [editAttrinbuteWithUnderBar isEqualToString:@"hit"] ||
+                        [editAttrinbuteWithUnderBar isEqualToString:@"carbs"] || [editAttrinbuteWithUnderBar isEqualToString:@"calories"] || [editAttrinbuteWithUnderBar isEqualToString:@"weight"] ||[editAttrinbuteWithUnderBar isEqualToString:@"protein"] || [editAttrinbuteWithUnderBar isEqualToString:@"fats"])
+                    {
+                        NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+                        [f setNumberStyle:NSNumberFormatterDecimalStyle];
+                        NSNumber * idPicture = [f numberFromString:[values objectAtIndex:counter]];
+                        [newManagedObject setValue:idPicture forKey:editAttrinbuteWithUnderBar];
+                    }
+                    else
+                        if ([editAttrinbuteWithUnderBar isEqualToString:@"action"])
+                        {
+                            if([[[attributeDictionary objectForKey:@"action"] objectAtIndex:counter] isEqual:@"2"])
+                            {
+                                [self deleteObjectFromEntity:entityName withProductId:[ArrayOfEnteringIDs objectAtIndex:counter]];
+                                break;
+                            }
+                            else
+                            {
+                                NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+                                [f setNumberStyle:NSNumberFormatterDecimalStyle];
+                                NSNumber *numberValue = [f numberFromString:[values objectAtIndex:counter]];
+                                [newManagedObject setValue:numberValue forKey:editAttrinbuteWithUnderBar];
+                            }
+                        }
+                        else
+                        {
+//                            [newManagedObject setValue:[[values objectAtIndex:counter] description] forKey:editAttrinbuteWithUnderBar];
+                            @try {
+                                [newManagedObject setValue:[[values objectAtIndex:counter] description] forKey:editAttrinbuteWithUnderBar];
+                            }
+                            @catch (NSException *exception) {
+                                NSLog(@"%@: %@", [exception name], editAttrinbuteWithUnderBar);
+                            }
+//                            @finally {
+//                                <#statements#>
+//                            }
+                        }
+                }
+                counter++;
+            }
+            // Save the context.
+            //NSError *error = nil;
+            NSError *error;
+            if (![context save:&error])
+            {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+                abort();
+            }
         }
     }
-    
 }
 
 
@@ -649,7 +661,7 @@
     NSArray *resultOfARequest = [moc executeFetchRequest:request error:&error];
     if (resultOfARequest.count != 0)
     {
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
+        NSString *urlForImage = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], [[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [[NSURL alloc] initWithString:urlForImage];
         return url;
@@ -675,7 +687,7 @@
     NSArray *resultOfARequest = [moc executeFetchRequest:request error:&error];
     //    if (resultOfARequest.count != 0)
     {
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
+        NSString *urlForImage = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], [[resultOfARequest objectAtIndex:0] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        NSURL *url = [[NSURL alloc] initWithString:urlForImage];
         return urlForImage;
@@ -1075,7 +1087,20 @@
     [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
     
     NSError *error;
-    NSArray *items= [context executeFetchRequest:request error:&error];
+    NSArray *items;
+    
+    [self setIsExceptionThrow:NO];
+    
+    @try {
+        items= [context executeFetchRequest:request error:&error];
+    }
+    @catch (NSException *exception) {
+        [self setIsExceptionThrow:YES];
+    }
+//    @finally {
+//        <#statements#>
+//    }
+    
     NSMutableArray *arrayOfIds = [[NSMutableArray alloc] init];
     if (items.count != 0)
     {

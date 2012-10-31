@@ -109,6 +109,12 @@
         <attribute name="menuText" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="underbarid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="MinimumOrderCost" syncable="YES">
+        <attribute name="idCity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idDelivery" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="underbarid" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Pictures" representedClassName="Pictures" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
@@ -238,6 +244,7 @@
         <element name="Languages" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Menus" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Menus_translation" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="MinimumOrderCost" positionX="160" positionY="192" width="128" height="105"/>
         <element name="Pictures" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Products" positionX="0" positionY="0" width="128" height="270"/>
         <element name="Products_translation" positionX="0" positionY="0" width="128" height="135"/>

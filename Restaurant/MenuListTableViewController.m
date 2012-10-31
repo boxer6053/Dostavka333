@@ -291,7 +291,7 @@
         
         NSData *dataOfPicture = [[NSData alloc] initWithContentsOfFile:[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"filePath"]];
         
-        NSString *urlForImage = [NSString stringWithFormat:@"http://matrix-soft.org/clients/%@",[[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
+        NSString *urlForImage = [NSString stringWithFormat:@"%@/%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], [[self.currentPictures objectForKey:dataStruct.idPicture] valueForKey:@"link"]];
         urlForImage = [urlForImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURL *url = [NSURL URLWithString:urlForImage];
         //        dataStruct.link = url.description;

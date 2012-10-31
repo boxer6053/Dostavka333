@@ -462,20 +462,17 @@
                 //    NSString *orderStringUrl = [@"http://matrix-soft.org/addon_domains_folder/test5/root/Customer_Scripts/makeOrder.php?tag=" stringByAppendingString: @"order"];
                 //    orderStringUrl = [orderStringUrl stringByAppendingString: @"&DBid=10&UUID=fdsampled-roma-roma-roma-69416d19df4e&ProdIDs=9;11&counts=30;5&city=Kyiv&street=qweqw&house=1&room_office=232&custName=eqweqwewqewe&phone=+380(099)9999999&idDelivery=1"];
                 
-                NSMutableString *order = [NSMutableString stringWithString: @"http://matrix-soft.org/clients/Customer_Scripts/makeOrder.php?tag=order&DBid=3&UUID="];
-//                if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-//                {
-                    NSString *uid = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
-                  //  NSString *uid1 = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+                NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/makeOrder.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=order&UUID="];
+                if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+                {
+                    NSString *uid = [self createUUID];
                     [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                   // [[NSUserDefaults standardUserDefaults] setValue:uid1 forKey:@"uid1"];
-
                     //9E3C884C-6E57-4D16-884F-46132825F21E
-//                    [[NSUserDefaults standardUserDefaults] synchronize];
-//                    [order appendString: uid];
-//                }
-//                else
-                    [order appendString:uid];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [order appendString: uid];
+                }
+                else
+                    [order appendString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uid"]];
                 
                 NSArray *cartArray = [[[GettingCoreContent alloc] init] fetchAllProductsIdAndTheirCountWithPriceForEntity:@"Cart"];
                 NSMutableString *ids = [[NSMutableString alloc] init];
@@ -823,27 +820,27 @@
 #pragma mark
 #pragma mark PRIVATE METHODS
 
-//- (NSString *)createUUID
-//{
-//    // Create universally unique identifier (object)
-//    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-//    
-//    // Get the string representation of CFUUID object.
-//    NSString *uuidStr = (__bridge NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
-//    
-//    // If needed, here is how to get a representation in bytes, returned as a structure
-//    // typedef struct {
-//    //   UInt8 byte0;
-//    //   UInt8 byte1;
-//    //   ...
-//    //   UInt8 byte15;
-//    // } CFUUIDBytes;
-//    //CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
-//    
-//    //CFRelease(uuidObject);
-//    
-//    return uuidStr;
-//}
+- (NSString *)createUUID
+{
+    // Create universally unique identifier (object)
+    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+    
+    // Get the string representation of CFUUID object.
+    NSString *uuidStr = (__bridge NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
+    
+    // If needed, here is how to get a representation in bytes, returned as a structure
+    // typedef struct {
+    //   UInt8 byte0;
+    //   UInt8 byte1;
+    //   ...
+    //   UInt8 byte15;
+    // } CFUUIDBytes;
+    //CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
+    
+    //CFRelease(uuidObject);
+    
+    return uuidStr;
+}
 
 -(void)setAllTitlesOnThisPage
 {

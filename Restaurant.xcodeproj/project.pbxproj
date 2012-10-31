@@ -177,6 +177,9 @@
 		FA7679A8163596EF009CF6C3 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7679A7163596EF009CF6C3 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FA7679AA163596FC009CF6C3 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7679A9163596FC009CF6C3 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FA7679AC1635970A009CF6C3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7679AB1635970A009CF6C3 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FA8DB9C9163EDBAD00678E25 /* FacebookShareViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8DB9C6163EDBAD00678E25 /* FacebookShareViewController.h */; };
+		FA8DB9CA163EDBAE00678E25 /* FacebookShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8DB9C7163EDBAD00678E25 /* FacebookShareViewController.m */; };
+		FA8DB9CB163EDBAE00678E25 /* FacebookShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8DB9C8163EDBAD00678E25 /* FacebookShareViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -383,6 +386,9 @@
 		FA7679A7163596EF009CF6C3 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		FA7679A9163596FC009CF6C3 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		FA7679AB1635970A009CF6C3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		FA8DB9C6163EDBAD00678E25 /* FacebookShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookShareViewController.h; sourceTree = "<group>"; };
+		FA8DB9C7163EDBAD00678E25 /* FacebookShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookShareViewController.m; sourceTree = "<group>"; };
+		FA8DB9C8163EDBAD00678E25 /* FacebookShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookShareViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,6 +518,9 @@
 				F53AF1721598877700EAA5AA /* Type of View */,
 				786B29A31546EC3F00486848 /* ProductDetailViewController.h */,
 				786B29A41546EC3F00486848 /* ProductDetailViewController.m */,
+				FA8DB9C6163EDBAD00678E25 /* FacebookShareViewController.h */,
+				FA8DB9C7163EDBAD00678E25 /* FacebookShareViewController.m */,
+				FA8DB9C8163EDBAD00678E25 /* FacebookShareViewController.xib */,
 				78005A0515778C8A0099F973 /* RestaurantViewController.h */,
 				78005A0615778C8A0099F973 /* RestaurantViewController.m */,
 				7851AC87157E45F10027BDDF /* RestaurantDetailViewController.h */,
@@ -774,6 +783,7 @@
 				F5986C751619F6D900D3FBF7 /* XMLParseOrdersStatuses.h in Headers */,
 				F5BCF704162438C1000C5714 /* ReservHistoryTableViewController.h in Headers */,
 				F5BCF706162438C1000C5714 /* ReservHistoryDetailViewController.h in Headers */,
+				FA8DB9C9163EDBAD00678E25 /* FacebookShareViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,6 +956,7 @@
 				F5142FF116245BAC00262BD2 /* New1.png in Resources */,
 				FA7679A416359611009CF6C3 /* FacebookSDKResources.bundle in Resources */,
 				FA7679A61635969E009CF6C3 /* FBUserSettingsViewResources.bundle in Resources */,
+				FA8DB9CB163EDBAE00678E25 /* FacebookShareViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1002,6 +1013,7 @@
 				F5986C761619F6D900D3FBF7 /* XMLParseOrdersStatuses.m in Sources */,
 				F5BCF705162438C1000C5714 /* ReservHistoryTableViewController.m in Sources */,
 				F5BCF707162438C1000C5714 /* ReservHistoryDetailViewController.m in Sources */,
+				FA8DB9CA163EDBAE00678E25 /* FacebookShareViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1107,7 +1119,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"/Users/matrixsoft/Documents/FacebookSDK\"",
+					"\"/Users/macbook/Documents/FacebookSDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Restaurant/Restaurant-Prefix.pch";
@@ -1116,6 +1128,7 @@
 					"~/GMGridView",
 				);
 				INFOPLIST_FILE = "Restaurant/Restaurant-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -1137,7 +1150,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
-					"\"/Users/matrixsoft/Documents/FacebookSDK\"",
+					"\"/Users/macbook/Documents/FacebookSDK\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Restaurant/Restaurant-Prefix.pch";
@@ -1146,6 +1159,7 @@
 					"~/GMGridView",
 				);
 				INFOPLIST_FILE = "Restaurant/Restaurant-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",

@@ -472,7 +472,7 @@
                     [order appendString: uid];
                 }
                 else
-                    [order appendString:[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+                    [order appendString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uid"]];
                 
                 NSArray *cartArray = [[[GettingCoreContent alloc] init] fetchAllProductsIdAndTheirCountWithPriceForEntity:@"Cart"];
                 NSMutableString *ids = [[NSMutableString alloc] init];
@@ -521,6 +521,7 @@
                 [order appendFormat:@"&ProdIDs=%@&counts=%@&city=%@&street=%@&house=%@&room_office=%@&custName=%@&phone=%@&additional_info=%@&deliveryType=%@&deliveryTime=%@",ids,counts,self.CityName.text,self.street.text,self.build.text,self.appartaments.text,self.customerName.text,self.phone.text,self.otherInformation.text, deliveryType,self.dateString];
                 
                 order = [order stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding].copy;
+                NSLog(@"order url = %@", order);
                 
                 NSURL *url = [NSURL URLWithString:order.copy];
                 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];

@@ -4,7 +4,7 @@
 #import "checkConnection.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
-#import "FacebookShareViewController.h"
+#import "ShareViewController.h"
 
 @interface ProductDetailViewController () <UITextViewDelegate>
 {
@@ -21,8 +21,8 @@
 @property (strong, nonatomic) GettingCoreContent *content;
 @property (strong, nonatomic) NSString *currentEmail;
 @property (strong, nonatomic) UIView *facebookLoginview;
-@property (strong, nonatomic) UIButton *authButton;
 @property (strong, nonatomic) UIButton *publishButton;
+@property (strong, nonatomic) UIButton *authButton;
 
 //titles
 @property (strong, nonatomic) NSString *titleWihtDiscounts;
@@ -31,8 +31,6 @@
 @property (weak, nonatomic) NSString *titleYES;
 @property (weak, nonatomic) NSString *titleNO;
 @property (weak, nonatomic) NSString *titleDoYouWantDeleteItemFromCart;
-
--(void) authButtonAction:(id)sender;
 
 @end
 
@@ -75,7 +73,6 @@
 @synthesize titleAddetItemToTheCart = _titleAddetItemToTheCart;
 @synthesize content = _content;
 @synthesize currentEmail = _currentEmail;
-@synthesize authButton = _authButton;
 @synthesize publishButton = _publishButton;
 
 //titles
@@ -206,33 +203,37 @@
     if (buttonIndex == 1)
     {
         [self findEmail];
-        //[self.navigationController setNavigationBarHidden:YES animated:NO];
         
         if(!self.facebookLoginview){
             self.facebookLoginview = [[UIView alloc] initWithFrame:self.view.frame];
             self.facebookLoginview.backgroundColor = [UIColor whiteColor];
         }
+        UIImage *fbImageTitle = [UIImage imageNamed:@"facebookTitle.png"];
+        UIImageView* fbImageTitleView= [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, fbImageTitle.size.width, fbImageTitle.size.height)];
+        [fbImageTitleView setImage:fbImageTitle];
+        [self.facebookLoginview addSubview:fbImageTitleView];
+        
+        UIImage *fbImage = [UIImage imageNamed:@"FBbackground.png"];
+        UIImageView* fbImageView= [[UIImageView alloc] initWithFrame:CGRectMake(200, 300, fbImage.size.width, fbImage.size.height)];
+        [fbImageView setImage:fbImage];
+        [self.facebookLoginview addSubview:fbImageView];
         
         UIButton *exitButton = [[UIButton alloc] initWithFrame:CGRectMake(280, 0, 35, 35)];
         [exitButton setImage:[UIImage imageNamed:@"close_x.png"] forState:UIControlStateNormal];
         [exitButton addTarget:self action:@selector(closeFacebookLoginView) forControlEvents:UIControlEventTouchUpInside];
         [self.facebookLoginview addSubview:exitButton];
         
-        _authButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _authButton.frame = CGRectMake(30, 100, 260, 40);
+        _authButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 200, 260, 40)];
+        [_authButton setBackgroundImage:[UIImage imageNamed:@"fbButton.png"] forState:UIControlStateNormal];
         [_authButton addTarget:self action:@selector(authButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-      //  [_authButton setImage:[UIImage imageNamed:@"Button_blue_rev2.png"] forState:UIControlStateNormal ];
         [_authButton setTitle:@"Login" forState:UIControlStateNormal];
-      //  [_authButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.facebookLoginview addSubview:_authButton];
         
-        _publishButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        _publishButton.frame = CGRectMake(30, 200, 260, 40);
+        _publishButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 250, 260, 40)];
+        [_publishButton setBackgroundImage:[UIImage imageNamed:@"fbButton.png"] forState:UIControlStateNormal];
         [_publishButton addTarget:self action:@selector(goToFBSharingView:) forControlEvents:UIControlEventTouchUpInside];
         [_publishButton setTitle:@"Publish" forState:UIControlStateNormal];
         [_publishButton setHidden:YES];
-      //  [_publishButton setImage:[UIImage imageNamed:@"Button_blue_rev2.png"] forState:UIControlStateNormal ];
-       //  [_authButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.facebookLoginview addSubview:_publishButton];
         
         [self.view addSubview:self.facebookLoginview];
@@ -270,17 +271,21 @@
     }
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"toShare"]) {
+        ShareViewController *shareViewController = segue.destinationViewController;
+        shareViewController.imageLink = self.product.link;
+        shareViewController.info = @"I like it in \"Dostavka 33 \"!";
+        shareViewController.link = _currentEmail;
+        shareViewController.name = self.product.title;
+    }
+}
+
 -(void) goToFBSharingView:(id)sender
 {
-    FacebookShareViewController *viewController = [[FacebookShareViewController alloc]
-                                           initWithNibName:@"FacebookShareViewController"
-                                           bundle:nil];
-    viewController.name = self.product.title;
-    viewController.imageLink = self.product.link;
-    viewController.info = [NSString stringWithFormat:@"I like it from %@",_currentEmail];
-    
-    [self presentViewController:viewController animated:YES completion:nil];
+    [self performSegueWithIdentifier:@"toShare" sender:self];
 }
+
 - (GettingCoreContent *)db
 {
     if(!_db)
@@ -505,36 +510,6 @@
 }
 
 - (IBAction)addToCart:(id)sender {
-    //    ProductDataStruct *offer;
-    //    NSMutableDictionary *offers;
-    //    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"offers"])
-    //    {
-    //        offers = [[NSMutableDictionary alloc] init];
-    //    }
-    //    else {
-    //        offers = [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"offers"]];
-    //    }
-    //    if(![offers objectForKey:self.product.productId])
-    //    {
-    //        //[offer setObject:[self.product objectForKey:@"id"] forKey:@"id"];
-    //        //[offer setObject:[self.product objectForKey:@"cost"] forKey:@"cost"];
-    //        //[offer setObject:[self.product objectForKey:@"name"] forKey:@"name"];
-    //        offer = self.product;
-    //    }
-    //    else
-    //    {
-    //        offer = [[ProductDataStruct alloc] initWithDictionary:[offers objectForKey:self.product.productId]];
-    //        int sum = offer.count.integerValue + self.product.count.integerValue;
-    //        offer.count = [NSNumber numberWithInt:sum];
-    //    }
-    //    [offers setObject:offer.getDictionaryDependOnDataStruct forKey:self.product.productId];
-    //    [[NSUserDefaults standardUserDefaults] setObject:offers forKey:@"offers"];
-    //    if([[NSUserDefaults standardUserDefaults] synchronize])
-    //    {
-    //        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"Количества товара \"%@\" в корзине %@ шт.", offer.title, offer.count] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    //        [alert show];
-    //        [[self navigationController] popViewControllerAnimated:YES];
-    //    }
     
     if (self.product.count.intValue == 0)
     {
@@ -621,10 +596,8 @@
 - (void)viewDidUnload
 {
     [self setCountPickerView:nil];
-    //[self setPriceLabel:nil];
     [self setPriceView:nil];
     [self setCartButton:nil];
-//    [self setProductImage:nil];
     [self setShareButton:nil];
     [self setNameLabal:nil];
     [self setAlert:nil];

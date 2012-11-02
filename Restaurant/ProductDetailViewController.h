@@ -46,4 +46,5 @@
 - (IBAction)showOrHidePictureViewContainer:(id)sender;
 - (IBAction)dragPictureViewContainer:(UIPanGestureRecognizer *)sender;
 
+- (IBAction)authButtonAction:(id)sender;
 @end

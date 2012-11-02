@@ -10,11 +10,25 @@
 
 NSString *const FBSessionStateChangedNotification =
 @"com.matrixsoftware.Restaurant:FBSessionStateChangedNotification";
+@synthesize testToken1 = _testToken11;
 
 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [FBSession.activeSession handleOpenURL:url];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//	self.window.rootViewController = self.viewController;
+	[self.window makeKeyAndVisible];
+    
+	// Let the device know we want to receive push notifications
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
     return YES;
 }
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -116,13 +130,6 @@ NSString *const FBSessionStateChangedNotification =
                                                                  state:state
                                                                  error:error];
                                          }];
-}
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [FBSession.activeSession handleOpenURL:url];
 }
 
 - (void) closeSession {

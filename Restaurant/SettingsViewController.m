@@ -1,17 +1,10 @@
-//
-//  SettingsViewController.m
-//  Restaurant
-//
-//  Created by Roman Slysh on 9/27/12.
-//
-//
-
 #import "SettingsViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
 #import <Social/Social.h>
+#import "ShareViewController.h"
 
-@interface SettingsViewController () <FBLoginViewDelegate, UITextViewDelegate>
+@interface SettingsViewController () <UITextViewDelegate>
 {
     BOOL isStyle;
     BOOL isCurrency;
@@ -19,6 +12,8 @@
 }
 
 @property (nonatomic, strong) NSArray *currencyArray;
+@property (strong, nonatomic) UIButton *authButton;
+@property (strong, nonatomic) UIButton *publishButton;
 
 //Titles
 @property (nonatomic, strong) NSString *titleSettings;
@@ -39,21 +34,15 @@
 @property (nonatomic, strong) NSString *titleSosialNetworks;
 @property (nonatomic, strong) NSString *titleCancel;
 
-@property (strong, nonatomic) UIView *facebookView;
-@property (strong, nonatomic) FBProfilePictureView *fbProfilePictureView;
-@property (strong, nonatomic) FBLoginView *loginview;
-@property (strong, nonatomic) UITextView *textView;
-@property (strong, nonatomic) UIButton *postOnWallButton;
-@property (strong, nonatomic) UIActivityIndicatorView *indicator;
-@property (strong, nonatomic) id<FBGraphUser> loggedInUser;
+@property (strong, nonatomic) UIView *facebookLoginView;
 
 @end
 
 @implementation SettingsViewController
 
 @synthesize currencyArray = _currencyArray;
-@synthesize loggedInUser = _loggedInUser;
-
+@synthesize authButton = _authButton;
+@synthesize publishButton = _publishButton;
 //Titles
 @synthesize titleSettings = _titleSettings;
 @synthesize titleLanguage = _titleLanguage;
@@ -76,7 +65,27 @@
 {
     [super viewDidLoad];
 
-//    [self setAllTitlesOnThisPage];
+    //FACEBOOK
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(sessionStateChanged:)
+     name:FBSessionStateChangedNotification
+     object:nil];
+    
+    RestaurantAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate openSessionWithAllowLoginUI:NO];
+    
+    //////////
+}
+
+- (void)sessionStateChanged:(NSNotification*)notification {
+    if (FBSession.activeSession.isOpen) {
+        self.publishButton.hidden = NO;
+        [self.authButton setTitle:@"Logout" forState:UIControlStateNormal];
+    } else {
+        self.publishButton.hidden = YES;
+        [self.authButton setTitle:@"Login" forState:UIControlStateNormal];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -99,7 +108,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -382,56 +391,40 @@
         }
         if (buttonIndex == 1)
         {
-            //Facebook
-            [self.navigationController setNavigationBarHidden:YES animated:NO];
-            
-            if (!self.facebookView)
+            if (!self.facebookLoginView)
             {
-                self.facebookView = [[UIView alloc] initWithFrame:self.view.frame];
-                self.facebookView.backgroundColor = [UIColor whiteColor];
+                self.facebookLoginView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 600)];
+                self.facebookLoginView.backgroundColor = [UIColor whiteColor];
             }
+            UIImage *fbImageTitle = [UIImage imageNamed:@"facebookTitle.png"];
+            UIImageView* fbImageTitleView= [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, fbImageTitle.size.width, fbImageTitle.size.height)];
+            [fbImageTitleView setImage:fbImageTitle];
+            [self.facebookLoginView addSubview:fbImageTitleView];
             
+            UIImage *fbImage = [UIImage imageNamed:@"FBbackground.png"];
+            UIImageView* fbImageView= [[UIImageView alloc] initWithFrame:CGRectMake(200, 300, fbImage.size.width, fbImage.size.height)];
+            [fbImageView setImage:fbImage];
+            [self.facebookLoginView addSubview:fbImageView];
             
-            if (!self.loginview)
-            {
-                self.loginview = [[FBLoginView alloc] initWithReadPermissions:[NSArray arrayWithObject:@"status_update"]];
-                self.loginview.frame = CGRectOffset(self.loginview.frame, 5, 5);
-                self.loginview.delegate = self;
-                [self.loginview sizeToFit];
-                [self.facebookView addSubview:self.loginview];
-            }
-            
-            
-            if (!self.fbProfilePictureView)
-            {
-                self.fbProfilePictureView = [[FBProfilePictureView alloc] initWithFrame:CGRectMake(20, 70, 100, 100)];
-                [self.facebookView addSubview:self.fbProfilePictureView];
-            }
-            
-            
-            self.textView = [[UITextView alloc] initWithFrame:CGRectMake(127, 70, 173, 100)];
-            [self.facebookView addSubview:self.textView];
-            self.textView.text = @"I downloaded \"Доставка 33\" from AppStore and I like it! :) \n https://itunes.apple.com/us/app/dostavka-33/id571980030?ls=1&mt=8";
-            [self.textView setReturnKeyType:UIReturnKeyDone];
-            [self.textView setDelegate:self];
-            [self.textView.layer setBorderColor:[[UIColor colorWithRed:59.0f/255.0f green:89.0f/255.0f blue:182.0f/255.0f alpha:1.0f] CGColor]];
-            [self.textView.layer setBorderWidth:2];
-            [self.textView.layer setCornerRadius:2];
-            
-            UIButton *exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            exitButton.frame = CGRectMake(280, 0, 35, 35);
+            UIButton *exitButton = [[UIButton alloc] initWithFrame:CGRectMake(280, 0, 35, 35)];
             [exitButton setImage:[UIImage imageNamed:@"close_x.png"] forState:UIControlStateNormal];
-            [exitButton addTarget:self action:@selector(removeMySelf) forControlEvents:UIControlEventTouchUpInside];
-            [self.facebookView addSubview:exitButton];
+            [exitButton addTarget:self action:@selector(closeFacebookLoginView) forControlEvents:UIControlEventTouchUpInside];
+            [self.facebookLoginView addSubview:exitButton];
             
-            self.postOnWallButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            self.postOnWallButton.frame = CGRectMake(84, 307, 150, 37);
-            [self.postOnWallButton setTitle:@"Post on timeline" forState:UIControlStateNormal];
-            [self.postOnWallButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-            [self.postOnWallButton addTarget:self action:@selector(postOnWall) forControlEvents:UIControlEventTouchUpInside];
-            [self.facebookView addSubview:self.postOnWallButton];
+            _authButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 200, 260, 40)];
+            [_authButton setBackgroundImage:[UIImage imageNamed:@"fbButton.png"] forState:UIControlStateNormal];
+            [_authButton addTarget:self action:@selector(authButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [_authButton setTitle:@"Login" forState:UIControlStateNormal];
+            [self.facebookLoginView addSubview:_authButton];
             
-            [self.view addSubview:self.facebookView];
+            _publishButton = [[UIButton alloc] initWithFrame:CGRectMake(30, 250, 260, 40)];
+            [_publishButton setBackgroundImage:[UIImage imageNamed:@"fbButton.png"] forState:UIControlStateNormal];
+            [_publishButton addTarget:self action:@selector(goToFBSharingView:) forControlEvents:UIControlEventTouchUpInside];
+            [_publishButton setTitle:@"Publish" forState:UIControlStateNormal];
+            [_publishButton setHidden:YES];
+            [self.facebookLoginView addSubview:_publishButton];
+            
+            [self.view addSubview:self.facebookLoginView];
         }
         
     }
@@ -466,92 +459,49 @@
                 break;
             }
         }
-//        self.currencyCell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] valueForKey:@"Currency"];
     }
     
     [self.tableView reloadData];
     
 }
-- (void) postOnWall
+
+
+//////////////////////
+#pragma mark FACEBOOK
+//////////////////////
+
+-(void) closeFacebookLoginView{
+    [self.facebookLoginView removeFromSuperview];
+}
+
+-(void)authButtonAction:(id)sender
 {
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.indicator.frame = self.facebookView.frame;
-    [self.facebookView addSubview:self.indicator];
-    [self.indicator startAnimating];
-    
-    
-    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] == NSNotFound)
-    {
-        // No permissions found in session, ask for it
-        [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
-                                                   defaultAudience:FBSessionDefaultAudienceFriends
-                                                 completionHandler:^(FBSession *session, NSError *error)
-         {
-             // If permissions granted, publish the story
-             if (!error)[self postToFB:_textView.text];
-         }];
+    RestaurantAppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    if (FBSession.activeSession.isOpen) {
+        [appDelegate closeSession];
+    } else {
+        [appDelegate openSessionWithAllowLoginUI:YES];
     }
-    // If permissions present, publish the story
-    else [self postToFB:_textView.text];
 }
 
-- (void) postToFB:(NSString*)message
+-(void) goToFBSharingView:(id)sender
 {
-    [FBRequestConnection startForPostStatusUpdate:message
-                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                        
-                              NSString *alertText;
-                              if (error) {
-                                  alertText = [NSString stringWithFormat:
-                                               @"error: domain = %@, code = %d",
-                                               error.domain, error.code];
-                                  [_indicator stopAnimating];
-                                  [self.facebookView removeFromSuperview];
-                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
-                              } else {
-                                  alertText = [NSString stringWithFormat:@"Posted successfully"];
-                                  [_indicator stopAnimating];
-                                  [self.facebookView removeFromSuperview];
-                                  [self.navigationController setNavigationBarHidden:NO animated:NO];
-                              }
-                              [[[UIAlertView alloc] initWithTitle:@"Result"
-                                                          message:alertText
-                                                         delegate:self
-                                                cancelButtonTitle:@"OK!"
-                                                otherButtonTitles:nil] show];
-                          }];
-}
-
-- (void)removeMySelf
-{
-    [self.facebookView removeFromSuperview];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    if (self.indicator)
-        [self.indicator stopAnimating];
-}
-- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
-{
-    NSLog(@"In");
-    self.postOnWallButton.enabled = YES;
-}
-
-- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
-{
-    NSLog(@"Out");
-    self.postOnWallButton.enabled = NO;
-    self.fbProfilePictureView.profileID = nil;
-}
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView
-                            user:(id<FBGraphUser>)user
-{
-    self.fbProfilePictureView.profileID = user.id;
-    self.loggedInUser = user; 
+    [self performSegueWithIdentifier:@"toShareAboutProgram" sender:self];
 }
 
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([segue.identifier isEqualToString:@"toShareAboutProgram"]) {
+        ShareViewController *shareViewController = segue.destinationViewController;
+        shareViewController.imageLink = @"https://lh6.googleusercontent.com/-Oo9ZpMcOy7I/UJOcN9NvvqI/AAAAAAAAABA/jW98WPQbroA/s507-p-k/logo.png";
+        shareViewController.info = @"I like this program!";
+        shareViewController.link = @"trololo";
+        shareViewController.name = @"Dostavka 33";
+    }
+
     if ([[segue identifier] isEqualToString:@"to Languages"])
     {
         [[segue destinationViewController] setArrayFromSegue:NO];

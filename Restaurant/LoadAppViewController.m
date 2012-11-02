@@ -105,10 +105,10 @@
         if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"])
         {
             
-            NSString *dbLink = @"http://matrix-soft.org/clients";
+            NSString *dbLink = @"http://matrix-soft.org/addon_domains_folder/test7/root";
             [[NSUserDefaults standardUserDefaults] setValue:dbLink forKey:@"dbLink"];
             
-            NSString *DBid = @"DBid=3";
+            NSString *DBid = @"DBid=12";
             [[NSUserDefaults standardUserDefaults] setValue:DBid forKey:@"DBid"];
             
             //tag=init http request

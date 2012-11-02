@@ -123,9 +123,31 @@
     }
 }
 
+- (NSString *)getCurrentCityName
+{
+    NSArray *citiesTranslation = [[NSArray alloc] initWithArray:[self.content getArrayFromCoreDatainEntetyName:@"Cities_translation" withSortDescriptor:@"underbarid"]];
+    
+    for (int i = 0; i < citiesTranslation.count; i++) {
+        NSString *idCity = [NSString stringWithFormat:@"%@", [[citiesTranslation objectAtIndex:i] valueForKey:@"idCity"]];
+        NSString *defaultCityId = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"defaultCityId"]];
+        if ([idCity isEqualToString:defaultCityId]) {
+            NSString *idLanguage = [NSString stringWithFormat:@"%@", [[citiesTranslation objectAtIndex:i] valueForKey:@"idLanguage"]];
+            NSString *defaultLanguageId = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"defaultLanguageId"]];
+            if ([idLanguage isEqualToString:defaultLanguageId]) {
+                return [[citiesTranslation objectAtIndex:i] valueForKey:@"name"];
+            }
+        }
+    }
+    
+    return nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSString *cityName = [self getCurrentCityName];
+    self.CityName.text = cityName;
     
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;

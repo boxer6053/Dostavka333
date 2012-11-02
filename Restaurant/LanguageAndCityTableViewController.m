@@ -177,7 +177,7 @@
             
             int checkCount = [[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] count];
             
-            BOOL isCity;
+            BOOL isCity = NO;
             
             for (int i = 0; i < checkCount; i++) {
                 NSString *idCityString = [[[self.content getArrayFromCoreDatainEntetyName:@"CheckChangesSettings" withSortDescriptor:@"idCity"] objectAtIndex:i] valueForKey:@"idCity"];

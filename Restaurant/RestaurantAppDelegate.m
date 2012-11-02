@@ -9,7 +9,7 @@
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
 NSString *const FBSessionStateChangedNotification =
-@"com.matrixsoftware.Restaurant:FBSessionStateChangedNotification";
+@"com.Matrix-Soft.com.Matrix-Soft:FBSessionStateChangedNotification";
 @synthesize testToken1 = _testToken11;
 
 

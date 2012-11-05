@@ -34,23 +34,20 @@
 //	self.window.rootViewController = self.viewController;
 	[self.window makeKeyAndVisible];
     
+    
 	// Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
     return YES;
 }
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
-{
-	NSLog(@"My token is: %@", deviceToken);
-    
-    self.testToken1 = [[[deviceToken description]
-                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
-                       stringByReplacingOccurrencesOfString:@" "
-                       withString:@""];
-    NSLog(@"newToken %@", self.testToken1);
-}
 
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    [UIApplication sharedApplication].applicationIconBadgeNumber = [[[userInfo objectForKey:@"aps"] objectForKey: @"badgecount"] intValue];
+
+}
 
 //-(NSString *)local
 //{

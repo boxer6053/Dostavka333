@@ -463,96 +463,96 @@
 }
 
 
-//-(void)animationForPromotions
-//{
-//        _imageArray = [[NSMutableArray alloc] init];
-//        for (int i = 0; i < self.promotionsArray.count; i++)
-//        {
-//            PromotionStruct *promotion = [self.promotionsArray objectAtIndex:i];
-//            if (![promotion image])
-//            {
-//                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[promotion link]]];
-//                UIImage *image = [UIImage imageWithData: imageData];
-//                [promotion setImage:image];
-//                [self.db SavePictureToCoreData:[promotion idPicture] toData:imageData];
-//                [_imageArray addObject:image];
-//            }
-//            else
-//            {
-//                [_imageArray addObject:[promotion image]];
-//            }
-//        }
-//        
-//        _imageView = [[UIImageView alloc] initWithFrame: _imageButton.frame];
-//        _imageView.animationImages = _imageArray;
-//        _imageView.clipsToBounds = YES;
-//        _imageView.contentMode = UIViewContentModeCenter;
-//        _imageView.animationDuration = _promotionsArray.count * 6.0;
-//        _imageView.animationRepeatCount = 0;
-//    
-//        currentImage = 0;
-//        [_imageView startAnimating];
-//        
-//        [UIView beginAnimations:nil context:NULL];
-//        [UIView setAnimationDuration:2];
-//        _viewForPromotion.frame = CGRectMake(0, 2, 320, 76);
-//        [UIView commitAnimations];
-//    
-//        [_viewForPromotion addSubview: self.imageButton];
-//        [self.imageButton addSubview: _imageView];
-//        
-//        [NSTimer scheduledTimerWithTimeInterval:6.0
+-(void)animationForPromotions
+{
+        _imageArray = [[NSMutableArray alloc] init];
+        for (int i = 0; i < self.promotionsArray.count; i++)
+        {
+            PromotionStruct *promotion = [self.promotionsArray objectAtIndex:i];
+            if (![promotion image])
+            {
+                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[promotion link]]];
+                UIImage *image = [UIImage imageWithData: imageData];
+                [promotion setImage:image];
+                [self.db SavePictureToCoreData:[promotion idPicture] toData:imageData];
+                [_imageArray addObject:image];
+            }
+            else
+            {
+                [_imageArray addObject:[promotion image]];
+            }
+        }
+        
+        _imageView = [[UIImageView alloc] initWithFrame: _imageButton.frame];
+        _imageView.animationImages = _imageArray;
+        _imageView.clipsToBounds = YES;
+        _imageView.contentMode = UIViewContentModeCenter;
+        _imageView.animationDuration = _promotionsArray.count * 6.0;
+        _imageView.animationRepeatCount = 0;
+    
+        currentImage = 0;
+        [_imageView startAnimating];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:2];
+        _viewForPromotion.frame = CGRectMake(0, 2, 320, 76);
+        [UIView commitAnimations];
+    
+        [_viewForPromotion addSubview: self.imageButton];
+        [self.imageButton addSubview: _imageView];
+        
+        [NSTimer scheduledTimerWithTimeInterval:6.0
+                                         target:self
+                                       selector:@selector(changingAnimation)
+                                       userInfo:nil
+                                        repeats:YES];
+    
+//        [NSTimer scheduledTimerWithTimeInterval:5.0
 //                                         target:self
-//                                       selector:@selector(changingAnimation)
+//                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
 //                                       userInfo:nil
-//                                        repeats:YES];
-//    
-////        [NSTimer scheduledTimerWithTimeInterval:5.0
-////                                         target:self
-////                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
-////                                       userInfo:nil
-////                                        repeats:NO];
-//    
-//}
-//
-////-(void) disappearOfPromotionAtTheFirstTime
-////{
-////    [UIView beginAnimations:nil context:NULL];
-////    [UIView setAnimationDuration:1];
-////    [_viewForPromotion setAlpha:0];
-////    [UIView commitAnimations];
-////    
-////    [NSTimer scheduledTimerWithTimeInterval:6.0
-////                                     target:self
-////                                   selector:@selector(disappearOfPromotion)
-////                                   userInfo:nil
-////                                    repeats:YES];
-////}
-////
-////-(void) disappearOfPromotion
-////{
-////    [UIView beginAnimations:nil context:NULL];
-////    [UIView setAnimationDuration:1];
-////    [_viewForPromotion setAlpha:0];
-////    [UIView commitAnimations];
-////}
-//
-//- (void)changingAnimation
+//                                        repeats:NO];
+    
+}
+
+//-(void) disappearOfPromotionAtTheFirstTime
 //{
-////    [UIView beginAnimations:nil context:NULL];
-////    [UIView setAnimationDuration:1];
-////    [_viewForPromotion setAlpha:1];
-////    [UIView commitAnimations];
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:0];
+//    [UIView commitAnimations];
 //    
-//    if (currentImage < self.promotionsArray.count - 1)
-//    {
-//        currentImage++;
-//    }
-//    else
-//    {
-//        currentImage = 0;
-//    }
+//    [NSTimer scheduledTimerWithTimeInterval:6.0
+//                                     target:self
+//                                   selector:@selector(disappearOfPromotion)
+//                                   userInfo:nil
+//                                    repeats:YES];
 //}
+//
+//-(void) disappearOfPromotion
+//{
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:0];
+//    [UIView commitAnimations];
+//}
+
+- (void)changingAnimation
+{
+//    [UIView beginAnimations:nil context:NULL];
+//    [UIView setAnimationDuration:1];
+//    [_viewForPromotion setAlpha:1];
+//    [UIView commitAnimations];
+    
+    if (currentImage < self.promotionsArray.count - 1)
+    {
+        currentImage++;
+    }
+    else
+    {
+        currentImage = 0;
+    }
+}
 
 
 - (void)somethingStupid

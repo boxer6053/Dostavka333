@@ -61,22 +61,33 @@
 //{
 //    return 
 //}
--(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    NSString *devToken = [[[[deviceToken description]
-                            stringByReplacingOccurrencesOfString:@"<"withString:@""]
-                           stringByReplacingOccurrencesOfString:@">" withString:@""]
-                          stringByReplacingOccurrencesOfString: @" " withString: @""];
+    NSLog(@"My token is: %@", deviceToken);
     
-    
-    NSString *str = [NSString
-                     stringWithFormat:@"Device Token=%@",devToken];
-    //UIAlertView *alertCtr = [[UIAlertView alloc] initWithTitle:@"Token is " message:devToken delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
-  //  [alertCtr show];
-    NSLog(@"%@",str);
-    self.testToken1 = str;
-NSLog(@"My token is: %@", self.testToken1);
+    self.testToken1 = [[[deviceToken description]
+                        stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
+                       stringByReplacingOccurrencesOfString:@" "
+                       withString:@""];
+    NSLog(@"newToken %@", self.testToken1);
 }
+//-(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+//{
+//    NSString *devToken = [[[[deviceToken description]
+//                            stringByReplacingOccurrencesOfString:@"<"withString:@""]
+//                           stringByReplacingOccurrencesOfString:@">" withString:@""]
+//                          stringByReplacingOccurrencesOfString: @" " withString: @""];
+//    
+//    
+//    NSString *str = [NSString
+//                     stringWithFormat:@"Device Token=%@",devToken];
+//    //UIAlertView *alertCtr = [[UIAlertView alloc] initWithTitle:@"Token is " message:devToken delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+//  //  [alertCtr show];
+//    NSLog(@"%@",str);
+//    self.testToken1 = str;
+//NSLog(@"My token is: %@", self.testToken1);
+//}
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);

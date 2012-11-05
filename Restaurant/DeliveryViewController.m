@@ -126,6 +126,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+     NSString *uid = [self createUUID];
+    NSLog(@"UUID is %@", uid);
     
     CAGradientLayer *mainGradient = [CAGradientLayer layer];
     mainGradient.frame = self.scrollView.bounds;
@@ -463,16 +465,17 @@
                 //    orderStringUrl = [orderStringUrl stringByAppendingString: @"&DBid=10&UUID=fdsampled-roma-roma-roma-69416d19df4e&ProdIDs=9;11&counts=30;5&city=Kyiv&street=qweqw&house=1&room_office=232&custName=eqweqwewqewe&phone=+380(099)9999999&idDelivery=1"];
                 
                 NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/makeOrder.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=order&UUID="];
-                if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-                {
-                    NSString *uid = [self createUUID];
-                    [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                    //9E3C884C-6E57-4D16-884F-46132825F21E
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [order appendString: uid];
-                }
-                else
-                    [order appendString:[[NSUserDefaults standardUserDefaults] valueForKey:@"uid"]];
+                NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+//                if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+//                {
+//                    NSString *uid = [self createUUID];
+//                    [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+//                    //9E3C884C-6E57-4D16-884F-46132825F21E
+//                    [[NSUserDefaults standardUserDefaults] synchronize];
+//                    [order appendString: uid];
+//                }
+//                else
+                    [order appendString:deviceToken];
                 
                 NSArray *cartArray = [[[GettingCoreContent alloc] init] fetchAllProductsIdAndTheirCountWithPriceForEntity:@"Cart"];
                 NSMutableString *ids = [[NSMutableString alloc] init];

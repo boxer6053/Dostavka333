@@ -321,16 +321,17 @@
             NSLog(@"currentRest -%@", restaurantName);
             
             NSMutableString *reserve = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/reserv.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=reserv&UUID="];
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-            {
-                NSString *uid = [self createUUID];
-                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                //9E3C884C-6E57-4D16-884F-46132825F21E
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [reserve appendString: uid];
-            }
-            else
-                [reserve appendString:[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+            NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+//            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+//            {
+//                NSString *uid = [self createUUID];
+//                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+//                //9E3C884C-6E57-4D16-884F-46132825F21E
+//                [[NSUserDefaults standardUserDefaults] synchronize];
+//                [reserve appendString: uid];
+//            }
+//            else
+                [reserve appendString:deviceToken];
             
             
             [reserve appendFormat:@"&idRestaurant=%@&custName=%@&numberOfPeople=%@&time=%@&phone=%@",restaurantId,self.name.text,self.numberOfPeople.text,self.dateOfReservation.text,self.phone.text];

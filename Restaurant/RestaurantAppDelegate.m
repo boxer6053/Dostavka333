@@ -17,7 +17,7 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
-@synthesize testToken1 = _testToken11;
+@synthesize testToken1 = _testToken1;
 
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
@@ -61,7 +61,22 @@
 //{
 //    return 
 //}
-
+-(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSString *devToken = [[[[deviceToken description]
+                            stringByReplacingOccurrencesOfString:@"<"withString:@""]
+                           stringByReplacingOccurrencesOfString:@">" withString:@""]
+                          stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    
+    NSString *str = [NSString
+                     stringWithFormat:@"Device Token=%@",devToken];
+    //UIAlertView *alertCtr = [[UIAlertView alloc] initWithTitle:@"Token is " message:devToken delegate:self cancelButtonTitle:nil otherButtonTitles: nil];
+  //  [alertCtr show];
+    NSLog(@"%@",str);
+    self.testToken1 = str;
+NSLog(@"My token is: %@", self.testToken1);
+}
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error);

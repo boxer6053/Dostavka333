@@ -315,16 +315,10 @@
         
         //отримуємо переклад згідно з поточною мовою
         NSArray *array = [self.db fetchObjectsFromCoreDataForEntity:@"Promotions_translation" withArrayObjects:arrayOfPromotions withDefaultLanguageId:[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
-        
-        //сортуємо масив щоб картинки з текстом співпадали
-        NSSortDescriptor *sortDescriptor;
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"IdPromotion" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        NSArray *arrayOfPromotionsWithTranslation;
-        arrayOfPromotionsWithTranslation = [array sortedArrayUsingDescriptors:sortDescriptors];
-        
+                
         _promotionsArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < arrayOfPromotionsWithTranslation.count; i++)
+        
+        for (int i = 0; i < arrayOfPromotions.count; i++)
         {
             PromotionStruct *promotion = [[PromotionStruct alloc] init];
             promotion.promotionId = [[arrayOfPromotions objectAtIndex:i] valueForKey:@"underbarid"];
@@ -332,11 +326,12 @@
             
             promotion.link = [self.db fetchImageStringURLbyPictureID:promotion.idPicture];
             promotion.image = [UIImage imageWithData:[self.db fetchPictureDataByPictureId:promotion.idPicture]];
-            promotion.descriptionText = [[arrayOfPromotionsWithTranslation objectAtIndex:i] valueForKey:@"descriptionAbout"];
-            promotion.title = [[arrayOfPromotionsWithTranslation objectAtIndex:i] valueForKey:@"title"];
+            promotion.descriptionText = [[array objectAtIndex:i] valueForKey:@"descriptionAbout"];
+            promotion.title = [[array objectAtIndex:i] valueForKey:@"title"];
             
             [_promotionsArray addObject:promotion];
         }
+
         return _promotionsArray;
     }
     return _promotionsArray;

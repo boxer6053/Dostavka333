@@ -315,7 +315,7 @@
         
         //отримуємо переклад згідно з поточною мовою
         NSArray *array = [self.db fetchObjectsFromCoreDataForEntity:@"Promotions_translation" withArrayObjects:arrayOfPromotions withDefaultLanguageId:[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"]];
-                
+        
         _promotionsArray = [[NSMutableArray alloc] init];
         
         for (int i = 0; i < arrayOfPromotions.count; i++)
@@ -331,7 +331,7 @@
             
             [_promotionsArray addObject:promotion];
         }
-
+        
         return _promotionsArray;
     }
     return _promotionsArray;
@@ -384,8 +384,8 @@
     if (countHistory != 0) {
         [self.historyButton setHidden:NO];
     }
-//    [self.historyButton setHidden:NO];
-
+    //    [self.historyButton setHidden:NO];
+    
 }
 - (IBAction)goToSettingsTableViewController:(id)sender
 {
@@ -449,7 +449,7 @@
         self.isMenuMode = YES;
     }
     
-   // [self animationForPromotions];
+    [self animationForPromotions];
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.bounds;
@@ -460,53 +460,53 @@
 
 -(void)animationForPromotions
 {
-        _imageArray = [[NSMutableArray alloc] init];
-        for (int i = 0; i < self.promotionsArray.count; i++)
+    _imageArray = [[NSMutableArray alloc] init];
+    for (int i = 0; i < self.promotionsArray.count; i++)
+    {
+        PromotionStruct *promotion = [self.promotionsArray objectAtIndex:i];
+        if (![promotion image])
         {
-            PromotionStruct *promotion = [self.promotionsArray objectAtIndex:i];
-            if (![promotion image])
-            {
-                NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[promotion link]]];
-                UIImage *image = [UIImage imageWithData: imageData];
-                [promotion setImage:image];
-                [self.db SavePictureToCoreData:[promotion idPicture] toData:imageData];
-                [_imageArray addObject:image];
-            }
-            else
-            {
-                [_imageArray addObject:[promotion image]];
-            }
+            NSData * imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:[promotion link]]];
+            UIImage *image = [UIImage imageWithData: imageData];
+            [promotion setImage:image];
+            [self.db SavePictureToCoreData:[promotion idPicture] toData:imageData];
+            [_imageArray addObject:image];
         }
-        
-        _imageView = [[UIImageView alloc] initWithFrame: _imageButton.frame];
-        _imageView.animationImages = _imageArray;
-        _imageView.clipsToBounds = YES;
-        _imageView.contentMode = UIViewContentModeCenter;
-        _imageView.animationDuration = _promotionsArray.count * 6.0;
-        _imageView.animationRepeatCount = 0;
+        else
+        {
+            [_imageArray addObject:[promotion image]];
+        }
+    }
     
-        currentImage = 0;
-        [_imageView startAnimating];
-        
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:2];
-        _viewForPromotion.frame = CGRectMake(0, 2, 320, 76);
-        [UIView commitAnimations];
+    _imageView = [[UIImageView alloc] initWithFrame: _imageButton.frame];
+    _imageView.animationImages = _imageArray;
+    _imageView.clipsToBounds = YES;
+    _imageView.contentMode = UIViewContentModeCenter;
+    _imageView.animationDuration = _promotionsArray.count * 6.0;
+    _imageView.animationRepeatCount = 0;
     
-        [_viewForPromotion addSubview: self.imageButton];
-        [self.imageButton addSubview: _imageView];
-        
-        [NSTimer scheduledTimerWithTimeInterval:6.0
-                                         target:self
-                                       selector:@selector(changingAnimation)
-                                       userInfo:nil
-                                        repeats:YES];
+    currentImage = 0;
+    [_imageView startAnimating];
     
-//        [NSTimer scheduledTimerWithTimeInterval:5.0
-//                                         target:self
-//                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
-//                                       userInfo:nil
-//                                        repeats:NO];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:2];
+    _viewForPromotion.frame = CGRectMake(0, 2, 320, 76);
+    [UIView commitAnimations];
+    
+    [_viewForPromotion addSubview: self.imageButton];
+    [self.imageButton addSubview: _imageView];
+    
+    [NSTimer scheduledTimerWithTimeInterval:6.0
+                                     target:self
+                                   selector:@selector(changingAnimation)
+                                   userInfo:nil
+                                    repeats:YES];
+    
+    //        [NSTimer scheduledTimerWithTimeInterval:5.0
+    //                                         target:self
+    //                                       selector:@selector(disappearOfPromotionAtTheFirstTime)
+    //                                       userInfo:nil
+    //                                        repeats:NO];
     
 }
 
@@ -516,7 +516,7 @@
 //    [UIView setAnimationDuration:1];
 //    [_viewForPromotion setAlpha:0];
 //    [UIView commitAnimations];
-//    
+//
 //    [NSTimer scheduledTimerWithTimeInterval:6.0
 //                                     target:self
 //                                   selector:@selector(disappearOfPromotion)
@@ -534,10 +534,10 @@
 
 - (void)changingAnimation
 {
-//    [UIView beginAnimations:nil context:NULL];
-//    [UIView setAnimationDuration:1];
-//    [_viewForPromotion setAlpha:1];
-//    [UIView commitAnimations];
+    //    [UIView beginAnimations:nil context:NULL];
+    //    [UIView setAnimationDuration:1];
+    //    [_viewForPromotion setAlpha:1];
+    //    [UIView commitAnimations];
     
     if (currentImage < self.promotionsArray.count - 1)
     {
@@ -558,7 +558,7 @@
     [self.cartButton setTitle:self.titleCart forState:UIControlStateNormal];
     [self.drop setTitle:self.titleBack forState:UIControlStateNormal];
     
-//    [self.pickerView reloadAllComponents];
+    //    [self.pickerView reloadAllComponents];
     if(fromSettings) //to stop scrolling to the beginning when come in previous screen
     {
         [self.pickerView reloadAllComponents];
@@ -595,12 +595,12 @@
         [self performSelector:@selector(cartButton:)withObject:nil];
     }
     
-//    [super viewWillAppear:animated];
-//    if(fromSettings) //to stop scrolling to the beginning when come in previous screen
-//    {
-//        [self.pickerView reloadAllComponents];
-//        fromSettings = NO;
-//    }
+    //    [super viewWillAppear:animated];
+    //    if(fromSettings) //to stop scrolling to the beginning when come in previous screen
+    //    {
+    //        [self.pickerView reloadAllComponents];
+    //        fromSettings = NO;
+    //    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -665,7 +665,7 @@
             break;
         }
     }
-//    int i = currentImage - 1;
+    //    int i = currentImage - 1;
     [subView.imageView setImage:[[self.promotionsArray objectAtIndex:currentImage] image]];
     subView.imageView.frame = CGRectMake(10.0,10.0, 300.0, 150.0);
     subView.label.frame = CGRectMake(0, 160.0, 320, subView.label.frame.size.height);
@@ -1130,7 +1130,7 @@
             if (isWithDiscount)
             {
                 
-            priceString = [NSString stringWithFormat:@"<strike>%@ %@</strike>",[formatter stringFromNumber:[NSNumber numberWithFloat:sum]], [[NSUserDefaults standardUserDefaults] valueForKey:@"Currency"]];
+                priceString = [NSString stringWithFormat:@"<strike>%@ %@</strike>",[formatter stringFromNumber:[NSNumber numberWithFloat:sum]], [[NSUserDefaults standardUserDefaults] valueForKey:@"Currency"]];
             }
             else
             {
@@ -1405,7 +1405,7 @@
                 self.alert = [[UIAlertView alloc] initWithTitle:self.titleCartIsEmpty message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil,nil];
                 [self.alert show];
                 [self performSelector:@selector(dismiss) withObject:nil afterDelay:2];
-
+                
             }
             else
             {
@@ -1415,7 +1415,7 @@
                 [actionSheet setDelegate:(id)self];
                 [actionSheet addButtonWithTitle:self.titleDelivery];  //@"Delivery"];
                 [actionSheet addButtonWithTitle:self.titleDeliveryByTime]; //@"Delivery by time"];
-//                [actionSheet addButtonWithTitle:@"Pick up"];
+                //                [actionSheet addButtonWithTitle:@"Pick up"];
                 [actionSheet addButtonWithTitle:self.titleCancel]; //@"Cancel"];
                 actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
                 [actionSheet showInView:self.view];
@@ -1526,7 +1526,7 @@
 }
 
 
-#pragma mark 
+#pragma mark
 #pragma mark PRIVATE METHODS
 
 -(void)setAllTitlesOnThisPage
@@ -1578,17 +1578,17 @@
         {
             self.titleCount = [[array objectAtIndex:i] valueForKey:@"title"];
         }
-
+        
         else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"With discounts"])
         {
             self.titleWithDiscounts = [[array objectAtIndex:i] valueForKey:@"title"];
         }
-    
+        
         else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Choose method to get order:"])
         {
             self.titleChooseMethodToGetOrder = [[array objectAtIndex:i] valueForKey:@"title"];
         }
-    
+        
         else if ([[[array objectAtIndex:i] valueForKey:@"name_EN"] isEqualToString:@"Delivery"])
         {
             self.titleDelivery = [[array objectAtIndex:i] valueForKey:@"title"];
@@ -1629,7 +1629,7 @@
             self.titleCartIsEmpty = [[array objectAtIndex:i] valueForKey:@"title"];
         }
     }
-
+    
 }
 
 

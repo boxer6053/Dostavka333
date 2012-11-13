@@ -439,19 +439,19 @@
             NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
             
             NSMutableString *myString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=params&idPhone=1"];
-            
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-            {
-                NSString *uid = [self createUUID];
-                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                //9E3C884C-6E57-4D16-884F-46132825F21E
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [myString appendFormat:@"&UUID=%@",uid];
-                
-            }
-            else
-                [myString appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+//            
+//            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+//            {
+//                NSString *uid = [self createUUID];
+//                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+//                //9E3C884C-6E57-4D16-884F-46132825F21E
+//                [[NSUserDefaults standardUserDefaults] synchronize];
+//                
+//                [myString appendFormat:@"&UUID=%@",uid];
+//                
+//            }
+//            else
+                [myString appendFormat:@"&UUID=%@",deviceToken];
             
             
             [myString appendFormat:@"&city_v=%@",maxCityVersion];

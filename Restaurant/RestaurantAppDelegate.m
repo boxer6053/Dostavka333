@@ -8,7 +8,11 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 
+NSString *const FBSessionStateChangedNotification =
+@"com.Matrix-Soft.com.Matrix-Soft:FBSessionStateChangedNotification";
 @synthesize testToken1 = _testToken1;
+@synthesize local = _local1;
+@synthesize testDeviceToken  = _testDeviceToken;
 
 
 - (BOOL)application:(UIApplication *)application
@@ -16,6 +20,12 @@
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
     return [FBSession.activeSession handleOpenURL:url];
+}
+
+-(NSString *)local
+{
+    _local1 = self.testDeviceToken;
+    return _local1;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -55,13 +65,15 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     NSLog(@"My token is: %@", deviceToken);
-    
+     self.testDeviceToken = @"Getttt";
+      NSLog(@"newToken1 %@", self.testDeviceToken);
     self.testToken1 = [[[deviceToken description]
                         stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]]
                        stringByReplacingOccurrencesOfString:@" "
                        withString:@""];
+   
     NSLog(@"newToken %@", self.testToken1);
-}
+       }
 //-(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 //{
 //    NSString *devToken = [[[[deviceToken description]

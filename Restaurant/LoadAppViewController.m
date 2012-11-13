@@ -12,6 +12,7 @@
 #import "checkConnection.h"
 #import "SSToolkit/SSLoadingView.h"
 
+
 @interface LoadAppViewController ()
 
 @property (strong, nonatomic) NSMutableData *responseData;
@@ -98,143 +99,31 @@
     return uuidStr;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+    
+    NSLog(@" getDeviceToken2 = %@",deviceToken);
+    NSLog(@"Im in viewWillAppear");
+}
+
 - (void)awakeFromNib
 {
-    if (checkConnection.hasConnectivity)
-    {
-        if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"])
-        {
-            
-            NSString *dbLink = @"http://matrix-soft.org/clients";
-            [[NSUserDefaults standardUserDefaults] setValue:dbLink forKey:@"dbLink"];
-            
-            NSString *DBid = @"DBid=3";
-            [[NSUserDefaults standardUserDefaults] setValue:DBid forKey:@"DBid"];
-            
-            //tag=init http request
-            NSLog(@"<<<<<<<<<Generating init request>>>>>>>>>>");
-            self.isFirstTime = YES;
-            NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=init&idPhone=1"];
-            
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-            {
-                NSString *uid = [self createUUID];
-                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                //9E3C884C-6E57-4D16-884F-46132825F21E
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [order appendFormat:@"&UUID=%@",uid];
-                
-            }
-            else
-                [order appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
-            
-            NSURL *url = [NSURL URLWithString:order];
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-            [request setHTTPMethod:@"GET"];
-            NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-            if (!theConnection)
-            {
-                // Inform the user that the connection failed.
-                UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
-                                                                             message:@"Not success"
-                                                                            delegate:self
-                                                                   cancelButtonTitle:@"Ok"
-                                                                   otherButtonTitles:nil];
-                [connectFailMessage show];
-            }
-        }
-        else
-        {
-            //http request updatePHP with &tag=params
-            NSLog(@"<<<<<<<<<Generating params request>>>>>>>>>>");
-            self.isParamTagDone = YES;
-            GettingCoreContent *content = [[GettingCoreContent alloc] init];
-            NSNumber *maxCityId = [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Cities"];
-            NSNumber *maxCityVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Cities"];
-            
-            NSNumber *maxLanguageId = [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Languages"];
-            NSNumber *maxLanguageVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Languages"];
-            
-            NSNumber *maxCurresnciesId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Currencies"];
-            NSNumber *maxCurrencyVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Currencies"];
-            
-            NSNumber *maxStatusId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Statuses"];
-            NSNumber *maxStatusVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Statuses"];
-            
-            NSNumber *maxDeliveriesId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Deliveries"];
-            NSNumber *maxDeliveryVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Deliveries"];
-            
-            NSNumber *maxPromotionsId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Promotions"];
-            NSNumber *maxPromotionsVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Promotions"];
-            
-            NSNumber *maxInterafaceId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Titles"];
-            NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
-            
-            NSMutableString *myString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=params&idPhone=1"];
-            
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
-            {
-                NSString *uid = [self createUUID];
-                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
-                //9E3C884C-6E57-4D16-884F-46132825F21E
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                
-                [myString appendFormat:@"&UUID=%@",uid];
-
-            }
-            else
-                [myString appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
-
-            
-            [myString appendFormat:@"&city_v=%@",maxCityVersion];
-            [myString appendFormat:@"&mcity_id=%@",maxCityId];
-            
-            [myString appendFormat:@"&lang_v=%@",maxLanguageVersion];
-            [myString appendFormat:@"&mlang_id=%@",maxLanguageId];
-            
-            [myString appendFormat:@"&curr_v=%@",maxCurrencyVersion];
-            [myString appendFormat:@"&mcurr_id=%@",maxCurresnciesId];
-            
-            [myString appendFormat:@"&stat_v=%@", maxStatusVersion];
-            [myString appendFormat:@"&mstat_id=%@", maxStatusId];
-            
-            [myString appendFormat:@"&del_v=%@", maxDeliveryVersion];
-            [myString appendFormat:@"&mdel_id=%@",maxDeliveriesId];
-            
-            [myString appendFormat:@"&prom_v=%@", maxPromotionsVersion];
-            [myString appendFormat:@"&mprom_id=%@",maxPromotionsId];
-            
-            [myString appendFormat:@"&interf_v=%@", maxInterfaceVersion];
-            [myString appendFormat:@"&minterf_id=%@",maxInterafaceId];
-            
-            NSURL *url = [NSURL URLWithString:myString.copy];
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-            [request setHTTPMethod:@"GET"];
-            NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-            if (!theConnection)
-            {
-                // Inform the user that the connection failed.
-                UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
-                                                                             message:@"Not success"
-                                                                            delegate:self
-                                                                   cancelButtonTitle:@"Ok"
-                                                                   otherButtonTitles:nil];
-                [connectFailMessage show];
-            }
-            
-        }
-    }
-    NSLog(@"IN awakeFromNib");
 }
 
 - (void)viewDidLoad
+
 {
+   
+
     SSLoadingView *loadingView = [[SSLoadingView alloc] initWithFrame:self.view.frame];
     loadingView.backgroundColor = [UIColor clearColor];
     loadingView.activityIndicatorView.color = [UIColor whiteColor];
     loadingView.textLabel.textColor = [UIColor whiteColor];
     loadingView.textLabel.text = @"";
+    NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+    
+    NSLog(@" getDeviceToken3 = %@",deviceToken);
     
 //    if (self.isFirstTime)
 //        loadingView.textLabel.text = @"Loading...";
@@ -278,7 +167,7 @@
     {
         self.imageView.image = [UIImage imageNamed:@"picture.png"];
     }
-    
+
     NSLog(@"I'm in viewDidLoad");
 }
 
@@ -296,12 +185,15 @@
     NSLog(@"Unable to fetch data");
     [self performSegueWithIdentifier:@"toMain" sender:self];
     [self DropCoreData];
+   
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSLog(@"Succeeded! Received %d bytes of data",[self.responseData
                                                    length]);
+
+    
     NSString *txt = [[NSString alloc] initWithData:self.responseData encoding: NSUTF8StringEncoding];
     NSLog(@"strinng is - %@",txt);
     
@@ -474,6 +366,136 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
+    NSString *deviceToken = [(RestaurantAppDelegate *)[[UIApplication sharedApplication] delegate] testToken1];
+    if (checkConnection.hasConnectivity)
+    {
+        if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultLanguageId"])
+        {
+            
+            NSString *dbLink = @"http://matrix-soft.org/clients";
+            [[NSUserDefaults standardUserDefaults] setValue:dbLink forKey:@"dbLink"];
+            
+            NSString *DBid = @"DBid=3";
+            [[NSUserDefaults standardUserDefaults] setValue:DBid forKey:@"DBid"];
+            
+            //tag=init http request
+            NSLog(@"<<<<<<<<<Generating init request>>>>>>>>>>");
+            self.isFirstTime = YES;
+            NSMutableString *order = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=init&idPhone=1"];
+            
+//            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+//            {
+//                NSString *uid = [self createUUID];
+//                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+//                //9E3C884C-6E57-4D16-884F-46132825F21E
+//                [[NSUserDefaults standardUserDefaults] synchronize];
+//                
+//                [order appendFormat:@"&UUID=%@",uid];
+//                
+//            }
+//            else
+                [order appendFormat:@"&UUID=%@",deviceToken];
+            
+            NSURL *url = [NSURL URLWithString:order];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [request setHTTPMethod:@"GET"];
+            NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            if (!theConnection)
+            {
+                // Inform the user that the connection failed.
+                UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
+                                                                             message:@"Not success"
+                                                                            delegate:self
+                                                                   cancelButtonTitle:@"Ok"
+                                                                   otherButtonTitles:nil];
+                [connectFailMessage show];
+            }
+        }
+        else
+        {
+            //http request updatePHP with &tag=params
+            NSLog(@"<<<<<<<<<Generating params request>>>>>>>>>>");
+            self.isParamTagDone = YES;
+            GettingCoreContent *content = [[GettingCoreContent alloc] init];
+            NSNumber *maxCityId = [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Cities"];
+            NSNumber *maxCityVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Cities"];
+            
+            NSNumber *maxLanguageId = [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Languages"];
+            NSNumber *maxLanguageVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Languages"];
+            
+            NSNumber *maxCurresnciesId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Currencies"];
+            NSNumber *maxCurrencyVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Currencies"];
+            
+            NSNumber *maxStatusId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Statuses"];
+            NSNumber *maxStatusVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Statuses"];
+            
+            NSNumber *maxDeliveriesId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Deliveries"];
+            NSNumber *maxDeliveryVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Deliveries"];
+            
+            NSNumber *maxPromotionsId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Promotions"];
+            NSNumber *maxPromotionsVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Promotions"];
+            
+            NSNumber *maxInterafaceId =  [content fetchMaximumNumberOfAttribute:@"underbarid" fromEntity:@"Titles"];
+            NSNumber *maxInterfaceVersion = [content fetchMaximumNumberOfAttribute:@"version" fromEntity:@"Titles"];
+            
+            NSMutableString *myString = [NSMutableString stringWithFormat:@"%@%@%@%@", [[NSUserDefaults standardUserDefaults] valueForKey:@"dbLink"], @"/Customer_Scripts/update.php?", [[NSUserDefaults standardUserDefaults] valueForKey:@"DBid"], @"&tag=params&idPhone=1"];
+            
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:@"uid"])
+            {
+                NSString *uid = [self createUUID];
+                [[NSUserDefaults standardUserDefaults] setValue:uid forKey:@"uid"];
+                //9E3C884C-6E57-4D16-884F-46132825F21E
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [myString appendFormat:@"&UUID=%@",uid];
+                
+            }
+            else
+                [myString appendFormat:@"&UUID=%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"]];
+            
+            
+            [myString appendFormat:@"&city_v=%@",maxCityVersion];
+            [myString appendFormat:@"&mcity_id=%@",maxCityId];
+            
+            [myString appendFormat:@"&lang_v=%@",maxLanguageVersion];
+            [myString appendFormat:@"&mlang_id=%@",maxLanguageId];
+            
+            [myString appendFormat:@"&curr_v=%@",maxCurrencyVersion];
+            [myString appendFormat:@"&mcurr_id=%@",maxCurresnciesId];
+            
+            [myString appendFormat:@"&stat_v=%@", maxStatusVersion];
+            [myString appendFormat:@"&mstat_id=%@", maxStatusId];
+            
+            [myString appendFormat:@"&del_v=%@", maxDeliveryVersion];
+            [myString appendFormat:@"&mdel_id=%@",maxDeliveriesId];
+            
+            [myString appendFormat:@"&prom_v=%@", maxPromotionsVersion];
+            [myString appendFormat:@"&mprom_id=%@",maxPromotionsId];
+            
+            [myString appendFormat:@"&interf_v=%@", maxInterfaceVersion];
+            [myString appendFormat:@"&minterf_id=%@",maxInterafaceId];
+            
+            NSURL *url = [NSURL URLWithString:myString.copy];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+            [request setHTTPMethod:@"GET"];
+            NSURLConnection *theConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            if (!theConnection)
+            {
+                // Inform the user that the connection failed.
+                UIAlertView *connectFailMessage = [[UIAlertView alloc] initWithTitle:@"NSURLConnection"
+                                                                             message:@"Not success"
+                                                                            delegate:self
+                                                                   cancelButtonTitle:@"Ok"
+                                                                   otherButtonTitles:nil];
+                [connectFailMessage show];
+            }
+            
+        }
+    }
+
+
+    NSLog(@" getDeviceToken4 = %@",deviceToken);
+     NSLog(@"I'm in viewDidAppear");
     if (![[NSUserDefaults standardUserDefaults] valueForKey:@"typeOfView"])
     {
         [[NSUserDefaults standardUserDefaults] setValue:@"menuList" forKey:@"typeOfView"];

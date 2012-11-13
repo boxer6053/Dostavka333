@@ -10,6 +10,7 @@
 #import "XMLParse.h"
 #import "GettingCoreContent.h"
 #import "Singleton.h"
+#import "RestaurantAppDelegate.h"
 
 @interface LoadAppViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
